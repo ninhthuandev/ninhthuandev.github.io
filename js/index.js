@@ -1,5 +1,4 @@
 document.addEventListener('alpine:init', () => {
-
     Alpine.store('theme', {
         value: 'light',
         setTheme(themeValue) {
@@ -11,4 +10,8 @@ document.addEventListener('alpine:init', () => {
         }
     });
 
+    const themeValue = localStorage.getItem('theme');
+    if (themeValue) {
+        Alpine.store('theme').setTheme(themeValue);
+    }
 });
