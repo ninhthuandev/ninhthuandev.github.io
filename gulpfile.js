@@ -73,6 +73,7 @@ function watchBuild(cb) {
 function serve() {
     gulpConnect.server({
         root: 'docs',
+        port: 5000,
         livereload: true
     });
 }
