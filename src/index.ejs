@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Web tools</title>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.7/dist/cdn.min.js"></script>
+
+    <%- include(rootPath + '/common/ejs/head-link-end-script'); %>
+</head>
+<body x-data :data-bs-theme="$store.theme.value">
+
+<nav class="navbar navbar-expand-lg border-bottom">
+    <div class="container">
+        <a class="navbar-brand  me-auto" href="/">
+            <i class="bi bi-tools"></i>
+            NT Tools
+        </a>
+        <span>
+        <button
+                :class="{'btn btn-light': !$store.theme.isDark(), 'btn btn-dark': $store.theme.isDark()}"
+                x-data @click="() => {$store.theme.toggle(); isDark = !$store.theme.isDark()}">
+          <i class="bi bi-brightness-high-fill"
+             x-data x-show="!$store.theme.isDark()"></i>
+          <span x-data x-show="!$store.theme.isDark()">
+            Light
+          </span>
+
+          <i class="bi bi-moon-stars-fill"
+             x-data x-show="$store.theme.isDark()"></i>
+          <span x-data x-show="$store.theme.isDark()">
+            Dark
+          </span>
+        </button>
+      </span>
+    </div>
+</nav>
+
+<div class="container pt-5">
+    <div class="row text-center">
+        <h1>Make life easier with our one-stop toolkit.</h1>
+    </div>
+    <div class="row text-center">
+        <h6>
+            Discover the ultimate toolkit for simplifying your life, all for free! From productivity hacks to handy
+            utilities,
+            our one-stop solution has you covered.
+            <br/>
+            Get ready to make life easier with our collection of tools!
+
+        </h6>
+        <p>
+            <i>We're constantly adding new tools to help you with even more tasks. Stay tuned!</i>
+        </p>
+    </div>
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2">
+        <%- include(rootPath + '/common/ejs/list-tools'); %>
+    </div>
+</div>
+
+<script src="/common/js/index.js"></script>
+</body>
+</html>

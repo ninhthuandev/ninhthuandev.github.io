@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Color picker</title>
+
+  <%- include(rootPath + '/common/ejs/head-link-end-script'); %>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
+  <script defer src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
+</head>
+<body x-data :data-bs-theme="$store.theme.value">
+
+<nav class="navbar navbar-expand-lg border-bottom">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <i class="bi bi-tools"></i>
+      NT Tools
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/color-tools">Colors</a>
+        </li>
+      </ul>
+      <span x-data="{isDark: $store.theme.value === 'dark'}">
+        <button
+                :class="{'btn btn-light': !isDark, 'btn btn-dark': isDark}"
+                x-data @click="() => {$store.theme.toggle(); isDark = !isDark}">
+          <i class="bi bi-brightness-high-fill"
+             x-data x-show="!isDark"></i>
+          <span x-data x-show="!isDark">
+            Light
+          </span>
+
+          <i class="bi bi-moon-stars-fill"
+             x-data x-show="isDark"></i>
+          <span x-data x-show="isDark">
+            Dark
+          </span>
+        </button>
+      </span>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="d-flex flex-column justify-content-center align-items-center color-picker-container">
+    <button type="button" class="btn btn-lg btn-outline-primary" x-data @click="$store.color.copy()">
+      <i class="bi bi-copy" x-data x-show="!$store.color.copied"></i>
+      <i class="bi bi-check2-all" x-data x-show="$store.color.copied"></i>
+       Copy
+    </button>
+    <p class="h1">
+      <span x-data x-text="$store.color.value">#000000</span>
+    </p>
+    <div class="coloris-container">
+      <input type="text" data-coloris class="coloris-field" value="#000000">
+    </div>
+  </div>
+</div>
+
+<style>
+  .color-picker-container {
+    padding-top: 30px;
+  }
+  .coloris-container .clr-field button {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+  }
+  .coloris-container input {
+    width: 275px;
+    font-size: 30px;
+    cursor: pointer;
+  }
+</style>
+
+<script src="/common/js/index.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>

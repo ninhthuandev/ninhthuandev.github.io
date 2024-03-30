@@ -7,6 +7,9 @@ document.addEventListener('alpine:init', () => {
         },
         toggle() {
             this.setTheme(this.value === 'dark' ? 'light' : 'dark');
+        },
+        isDark() {
+            return this.value === 'dark';
         }
     });
 

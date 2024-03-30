@@ -1,0 +1,10 @@
+{
+  "tools": [
+    {
+      "name": "Color Picker",
+      "description": "Choose a color from the color picker and get the hex, rgba, rbg code.",
+      "comingSoon": false,
+      "href": "/color-tools/color-picker"
+    }
+  ]
+}

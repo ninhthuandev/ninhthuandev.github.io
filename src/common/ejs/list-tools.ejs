@@ -1,0 +1,11 @@
+<% for(let tool of tools) { %>
+    <div class="col">
+        <a class="btn btn-lg btn-light w-100 h-100 d-flex align-items-center justify-content-center"
+           href="<%= tool.href %>">
+            <%= tool.name %>
+            <% if (tool.comingSoon) { %>
+                <br/> (Coming soon)
+            <% } %>
+        </a>
+    </div>
+<% } %>

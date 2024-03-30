@@ -1,0 +1,28 @@
+{
+  "tools": [
+    {
+      "name": "Color Tools",
+      "description": "A collection of tools for working with colors.",
+      "comingSoon": false,
+      "href": "/color-tools"
+    },
+    {
+      "name": "QR Tools",
+      "description": "A collection of tools for working with QR codes.",
+      "comingSoon": true,
+      "href": "#"
+    },
+    {
+      "name": "Crypto Tools",
+      "description": "A collection of tools for working with cryptographic algorithms.",
+      "comingSoon": true,
+      "href": "#"
+    },
+    {
+      "name": "Datetime Tools",
+      "description": "A collection of tools for working with dates and times.",
+      "comingSoon": true,
+      "href": "#"
+    }
+  ]
+}

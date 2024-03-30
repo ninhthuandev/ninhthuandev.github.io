@@ -1,0 +1,2 @@
+"use strict";document.addEventListener("alpine:init",function(){Alpine.store("theme",{value:"light",setTheme:function(e){this.value=e,localStorage.setItem("theme",this.value)},toggle:function(){this.setTheme("dark"===this.value?"light":"dark")},isDark:function(){return"dark"===this.value}});var e=localStorage.getItem("theme");e&&Alpine.store("theme").setTheme(e)});
+//# sourceMappingURL=index.js.map
