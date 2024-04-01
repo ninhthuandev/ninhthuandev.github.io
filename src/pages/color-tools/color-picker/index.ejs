@@ -17,7 +17,7 @@
 
 <div class="container">
   <div class="d-flex flex-column justify-content-center align-items-center color-picker-container">
-    <button type="button" class="btn btn-lg btn-outline-primary" x-data @click="$store.color.copy()">
+    <button type="button" class="btn btn-lg btn-light" x-data @click="$store.color.copy()">
       <i class="bi bi-copy" x-data x-show="!$store.color.copied"></i>
       <i class="bi bi-check2-all" x-data x-show="$store.color.copied"></i>
        Copy
@@ -32,9 +32,6 @@
 </div>
 
 <style>
-  .color-picker-container {
-    padding-top: 30px;
-  }
   .coloris-container .clr-field button {
     width: 100%;
     height: 100%;

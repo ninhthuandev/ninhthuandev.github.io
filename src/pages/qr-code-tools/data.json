@@ -1,0 +1,10 @@
+{
+  "tools": [
+    {
+      "name": "QR Code Generator",
+      "description": "Create QR codes for your website, business cards, wifi,...",
+      "comingSoon": false,
+      "href": "/qr-code-tools/qr-code-generator"
+    }
+  ]
+}
