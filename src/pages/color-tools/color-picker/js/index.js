@@ -34,7 +34,7 @@ document.addEventListener('alpine:init', () => {
             alpha: true,
             forceAlpha: false,
             swatchesOnly: false,
-            focusInput: true,
+            focusInput: false,
             selectInput: false,
             clearButton: true,
             clearLabel: 'Clear',

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Color tools</title>
+    <title>Generate QR Code tools</title>
 
     <%- include(rootPath + '/common/ejs/head-link-end-script'); %>
     <script src="js/easy.qrcode.min.js"></script>
@@ -16,8 +16,8 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-7">
-            <div class="d-flex justify-content-between mb-3">
+        <div class="col-12 col-lg-7">
+            <div class="list-buttons d-flex flex-wrap justify-content-center mb-3">
                 <button @click="$store.qrCode.changeType(QrCodeType.TEXT)"
                         class="btn"
                         :class="$store.qrCode.isType(QrCodeType.TEXT) ? 'btn-secondary' : 'btn-outline-secondary'">
@@ -42,15 +42,43 @@
                     <i class="bi bi-person-vcard"></i>
                     VCARD
                 </button>
+                <button @click="$store.qrCode.changeType(QrCodeType.SMS)"
+                        class="btn"
+                        :class="$store.qrCode.isType(QrCodeType.SMS) ? 'btn-secondary' : 'btn-outline-secondary'">
+                    <i class="bi bi-chat-left-dots"></i>
+                    SMS
+                </button>
+                <button @click="$store.qrCode.changeType(QrCodeType.WIFI)"
+                        class="btn"
+                        :class="$store.qrCode.isType(QrCodeType.WIFI) ? 'btn-secondary' : 'btn-outline-secondary'">
+                    <i class="bi bi-wifi"></i>
+                    WIFI
+                </button>
             </div>
 
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title" x-text="$store.qrCode.type">URL</h5>
                     <div class="form-container mt-4">
+                        <div class="form-text" x-show="$store.qrCode.isType(QrCodeType.TEXT)">
+                            <div class="mb-3"
+                                 x-data="{text: ''}">
+                                <textarea class="form-control"
+                                          placeholder="Enter your text"
+                                          x-model.lazy="text"
+                                          rows="2"></textarea>
+
+                                <button class="w-100 btn btn-success mt-3"
+                                        @click="$store.qrCode.changeValueAndGenerateQrCode(text)">
+                                    Generate QR Code
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="form-url"
+                             style="display: none;"
                              x-show="$store.qrCode.isType(QrCodeType.URL)"
-                             x-data="getUrlFormData()"
+                             x-data="urlFormData"
                              x-init="$watch('url', value => validate('url'))">
                             <div class="mb-3">
                                 <input type="url" class="form-control"
@@ -66,16 +94,168 @@
                             </div>
                         </div>
 
-                        <div class="form-text" x-show="$store.qrCode.isType(QrCodeType.TEXT)">
+                        <div class="form-email"
+                             style="display: none;"
+                             x-show="$store.qrCode.isType(QrCodeType.EMAIL)">
                             <div class="mb-3"
-                                 x-data="{text: ''}">
-                                <textarea class="form-control"
-                                          placeholder="Enter your text"
-                                          x-model.lazy="text"
-                                          rows="2"></textarea>
+                                 x-data="emailFormData"
+                                 x-init="$watch('email', value => validate('email'))">
+                                <div>
+                                    <input type="url" class="form-control"
+                                           placeholder="Enter the email address"
+                                           x-model.lazy="email">
+                                    <span class="text-danger"
+                                          x-show="validation.email.message"
+                                          x-text="validation.email.message"></span>
+                                </div>
+
+                                <div class="mt-3">
+                                    <input type="url" class="form-control"
+                                           placeholder="Enter the email subject"
+                                           x-model.lazy="subject">
+                                </div>
+
+                                <div class="mt-3">
+                                    <textarea class="form-control"
+                                              placeholder="Enter the email body content"
+                                              x-model.lazy="body"
+                                              rows="3"></textarea>
+                                </div>
+                                <button class="w-100 btn btn-success mt-3"
+                                        @click="$store.qrCode.changeValueAndGenerateQrCode(toQrCodeStringFromEmailData())">
+                                    Generate QR Code
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-vcard"
+                             style="display: none;"
+                             x-show="$store.qrCode.isType(QrCodeType.VCARD)">
+                            <div class="mb-3"
+                                 x-data="vCardFormData">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label>First Name:</label>
+                                        <input type="text" class="form-control mt-1"
+                                               placeholder="Enter the first name"
+                                               x-model.lazy="firstName">
+                                    </div>
+                                    <div class="col-6">
+                                        <label>Last Name:</label>
+                                        <input type="text" class="form-control mt-1"
+                                               placeholder="Enter the last name"
+                                               x-model.lazy="lastName">
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <label>Company name:</label>
+                                    <input type="text" class="form-control mt-1"
+                                           placeholder="Enter the company name"
+                                           x-model.lazy="organization">
+                                </div>
+
+                                <div class="mt-3">
+                                    <label>Job title:</label>
+                                    <input type="text" class="form-control mt-1"
+                                           placeholder="Enter the job title"
+                                           x-model.lazy="jobTitle">
+                                </div>
+
+                                <div class="mt-3">
+                                    <label>Phone number:</label>
+                                    <input type="text" class="form-control mt-1"
+                                           placeholder="Enter the phone number"
+                                           x-model.lazy="phone">
+                                </div>
+
+                                <div class="mt-3">
+                                    <label>Email address:</label>
+                                    <input type="text" class="form-control mt-1"
+                                           placeholder="Enter the email address"
+                                           x-model.lazy="email">
+                                </div>
+
+                                <div class="mt-3">
+                                    <label>Website URL:</label>
+                                    <input type="text" class="form-control mt-1"
+                                           placeholder="Enter the website URL"
+                                           x-model.lazy="website">
+                                </div>
+
+                                <div class="mt-3">
+                                    <label>Address:</label>
+                                    <input type="text" class="form-control mt-1"
+                                           placeholder="Enter the address"
+                                           x-model.lazy="address">
+                                </div>
 
                                 <button class="w-100 btn btn-success mt-3"
-                                        @click="$store.qrCode.changeValueAndGenerateQrCode(text)">
+                                        @click="$store.qrCode.changeValueAndGenerateQrCode(toQrCodeStringFromVCardData())">
+                                    Generate QR Code
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-sms"
+                             style="display: none;"
+                             x-show="$store.qrCode.isType(QrCodeType.SMS)">
+                            <div class="mb-3"
+                                 x-data="smsFormData">
+                                <div>
+                                    <input type="text" class="form-control"
+                                           placeholder="Enter the phone number"
+                                           x-model.lazy="phoneNumber"/>
+                                </div>
+
+                                <div class="mt-3">
+                                    <textarea type="text" class="form-control"
+                                              placeholder="Enter the SMS message"
+                                              x-model.lazy="message"></textarea>
+                                </div>
+                                <button class="w-100 btn btn-success mt-3"
+                                        @click="$store.qrCode.changeValueAndGenerateQrCode(toQrCodeStringFromSmsData())">
+                                    Generate QR Code
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-wifi"
+                             style="display: none;"
+                             x-show="$store.qrCode.isType(QrCodeType.WIFI)">
+                            <div class="mb-3"
+                                 x-data="wifiFormData">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <input type="text" class="form-control"
+                                               placeholder="Enter the SSID (Wifi name)"
+                                               x-model.lazy="ssid"/>
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="checkbox"
+                                               class="form-check-input"
+                                               id="wifiQrCodeFormIsHidden"
+                                               x-model.lazy="hidden"/>
+                                        <label for="wifiQrCodeFormIsHidden" class="form-check-label">Hidden network</label>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3">
+                                    <input type="text" class="form-control"
+                                           placeholder="Enter the password"
+                                           x-model.lazy="password"/>
+                                </div>
+
+                                <div class="mt-3">
+                                    <select class="form-select"
+                                            x-model="encryption">
+                                        <option value="WPA">WPA/WPA2</option>
+                                        <option value="WEP">WEP</option>
+                                        <option value="nopass">No password</option>
+                                    </select>
+                                </div>
+
+                                <button class="w-100 btn btn-success mt-3"
+                                        @click="$store.qrCode.changeValueAndGenerateQrCode(toQrCodeStringFromWifiData())">
                                     Generate QR Code
                                 </button>
                             </div>
@@ -84,10 +264,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-5 d-flex justify-content-center">
+
+        <div class="col-12 col-lg-5 d-flex justify-content-center">
             <div id="qr-code-image"></div>
         </div>
     </div>
+</div>
 </div>
 
 <script src="/common/js/index.js"></script>

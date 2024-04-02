@@ -63,10 +63,19 @@ function buildJs(cb) {
     cb();
 }
 
+function buildCss(cb) {
+    gulp.src('./src/**/*.css', {base: './src'})
+        .pipe(rename(extractPagesFolder()))
+        .pipe(gulp.dest('./docs'))
+        .pipe(gulpConnect.reload());
+    cb();
+
+}
+
 function watchBuild(cb) {
     gulp.watch('./src/**/*.ejs', buildEjs);
     gulp.watch('./src/**/*.js', buildJs);
-
+    gulp.watch('./src/**/*.css', buildCss);
     cb();
 }
 
@@ -84,8 +93,9 @@ function test(cb) {
 
 exports.buildEjs = buildEjs;
 exports.buildJs = buildJs;
+exports.buildCss = buildCss;
 exports.watchBuild = watchBuild;
 exports.test = test;
-exports.serve = gulp.series(buildEjs, buildJs, watchBuild, serve);
+exports.serve = gulp.series(buildEjs, buildJs, buildCss, watchBuild, serve);
 exports.build = gulp.series(buildEjs, buildJs);
 exports.default = gulp.series(buildEjs, buildJs);
