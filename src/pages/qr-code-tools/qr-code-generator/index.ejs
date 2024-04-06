@@ -16,44 +16,59 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-12 col-lg-7">
-            <div class="list-buttons d-flex flex-wrap justify-content-center mb-3">
-                <button @click="$store.qrCode.changeType(QrCodeType.TEXT)"
-                        class="btn"
-                        :class="$store.qrCode.isType(QrCodeType.TEXT) ? 'btn-secondary' : 'btn-outline-secondary'">
-                    <i class="bi bi-file-earmark-text"></i>
-                    TEXT
-                </button>
-                <button @click="$store.qrCode.changeType(QrCodeType.URL)"
-                        class="btn"
-                        :class="$store.qrCode.isType(QrCodeType.URL) ? 'btn-secondary' : 'btn-outline-secondary'">
-                    <i class="bi bi-link"></i>
-                    URL
-                </button>
-                <button @click="$store.qrCode.changeType(QrCodeType.EMAIL)"
-                        class="btn"
-                        :class="$store.qrCode.isType(QrCodeType.EMAIL) ? 'btn-secondary' : 'btn-outline-secondary'">
-                    <i class="bi bi-envelope-at"></i>
-                    EMAIL
-                </button>
-                <button @click="$store.qrCode.changeType(QrCodeType.VCARD)"
-                        class="btn"
-                        :class="$store.qrCode.isType(QrCodeType.VCARD) ? 'btn-secondary' : 'btn-outline-secondary'">
-                    <i class="bi bi-person-vcard"></i>
-                    VCARD
-                </button>
-                <button @click="$store.qrCode.changeType(QrCodeType.SMS)"
-                        class="btn"
-                        :class="$store.qrCode.isType(QrCodeType.SMS) ? 'btn-secondary' : 'btn-outline-secondary'">
-                    <i class="bi bi-chat-left-dots"></i>
-                    SMS
-                </button>
-                <button @click="$store.qrCode.changeType(QrCodeType.WIFI)"
-                        class="btn"
-                        :class="$store.qrCode.isType(QrCodeType.WIFI) ? 'btn-secondary' : 'btn-outline-secondary'">
-                    <i class="bi bi-wifi"></i>
-                    WIFI
-                </button>
+        <div class="col-12 col-lg-9 order-1 order-lg-0">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-2 pb-2">
+                <div class="col">
+                    <button @click="$store.qrCode.changeType(QrCodeType.TEXT)"
+                            class="btn w-100 h-100"
+                            :class="$store.qrCode.isType(QrCodeType.TEXT) ? 'btn-secondary' : 'btn-outline-secondary'">
+                        <i class="bi bi-file-earmark-text"></i>
+                        TEXT
+                    </button>
+                </div>
+
+                <div class="col">
+                    <button @click="$store.qrCode.changeType(QrCodeType.URL)"
+                            class="btn w-100 h-100"
+                            :class="$store.qrCode.isType(QrCodeType.URL) ? 'btn-secondary' : 'btn-outline-secondary'">
+                        <i class="bi bi-link"></i>
+                        URL
+                    </button>
+                </div>
+
+                <div class="col">
+                    <button @click="$store.qrCode.changeType(QrCodeType.EMAIL)"
+                            class="btn w-100 h-100"
+                            :class="$store.qrCode.isType(QrCodeType.EMAIL) ? 'btn-secondary' : 'btn-outline-secondary'">
+                        <i class="bi bi-envelope-at"></i>
+                        EMAIL
+                    </button>
+                </div>
+                <div class="col">
+                    <button @click="$store.qrCode.changeType(QrCodeType.VCARD)"
+                            class="btn w-100 h-100"
+                            :class="$store.qrCode.isType(QrCodeType.VCARD) ? 'btn-secondary' : 'btn-outline-secondary'">
+                        <i class="bi bi-person-vcard"></i>
+                        VCARD
+                    </button>
+                </div>
+                <div class="col">
+                    <button @click="$store.qrCode.changeType(QrCodeType.SMS)"
+                            class="btn w-100 h-100"
+                            :class="$store.qrCode.isType(QrCodeType.SMS) ? 'btn-secondary' : 'btn-outline-secondary'">
+                        <i class="bi bi-chat-left-dots"></i>
+                        SMS
+                    </button>
+                </div>
+
+                <div class="col">
+                    <button @click="$store.qrCode.changeType(QrCodeType.WIFI)"
+                            class="btn w-100 h-100"
+                            :class="$store.qrCode.isType(QrCodeType.WIFI) ? 'btn-secondary' : 'btn-outline-secondary'">
+                        <i class="bi bi-wifi"></i>
+                        WIFI
+                    </button>
+                </div>
             </div>
 
             <div class="card">
@@ -235,7 +250,8 @@
                                                class="form-check-input"
                                                id="wifiQrCodeFormIsHidden"
                                                x-model.lazy="hidden"/>
-                                        <label for="wifiQrCodeFormIsHidden" class="form-check-label">Hidden network</label>
+                                        <label for="wifiQrCodeFormIsHidden" class="form-check-label">Hidden
+                                            network</label>
                                     </div>
                                 </div>
 
@@ -265,7 +281,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-lg-5 d-flex justify-content-center">
+        <div class="col-12 col-lg-3 pb-3 pb-lg-0 d-flex justify-content-center order-0 order-lg-1">
             <div id="qr-code-image"></div>
         </div>
     </div>

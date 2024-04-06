@@ -9,7 +9,7 @@
     {
       "name": "QR Tools",
       "description": "A collection of tools for working with QR codes.",
-      "comingSoon": true,
+      "comingSoon": false,
       "href": "/qr-code-tools"
     },
     {
