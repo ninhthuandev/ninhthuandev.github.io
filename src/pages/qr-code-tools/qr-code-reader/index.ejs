@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Generate QR Code Reader</title>
+
+    <%- include(rootPath + '/common/ejs/head-link-end-script'); %>
+
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body x-data :data-bs-theme="$store.theme.value">
+
+<%- include(rootPath + '/common/ejs/nav-bar-with-data', {navbarLinks: [{"name": "QR Code tools", "href": "/qr-code-tools"}]}) %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <label>Select your camera</label>
+            <select class="form-select" aria-label="Default select example" disabled>
+                <template x-for="device in $store.cameraDevices.devices">
+                    <option x-text="device?.label"
+                            :value="device?.deviceId"></option>
+                </template>
+            </select>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary" x-data @click="initView($store.cameraDevices.selectedDevice.id)">Start Scanning</button>
+        </div>
+        <div class="col-12">
+            <div id="reader" style="width: 500px;"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/common/js/index.js"></script>
+<script src="js/qr-code-reader.js"></script>
+</body>
+</html>

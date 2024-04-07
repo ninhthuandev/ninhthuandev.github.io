@@ -5,6 +5,12 @@
       "description": "Create QR codes for your website, business cards, wifi,...",
       "comingSoon": false,
       "href": "/qr-code-tools/qr-code-generator"
+    },
+    {
+      "name": "QR Code Reader",
+      "description": "QR Code reader",
+      "comingSoon": false,
+      "href": "/qr-code-tools/qr-code-reader"
     }
   ]
 }
