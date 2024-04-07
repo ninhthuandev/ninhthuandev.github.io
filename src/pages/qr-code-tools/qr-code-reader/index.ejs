@@ -18,10 +18,12 @@
     <div class="row">
         <div class="col-12">
             <label>Select your camera</label>
-            <select class="form-select" aria-label="Default select example" disabled>
+            <select class="form-select"
+                    aria-label="Default select example"
+                    @change="$store.cameraDevices.changeDevices($event)">
                 <template x-for="device in $store.cameraDevices.devices">
                     <option x-text="device?.label"
-                            :value="device?.deviceId"></option>
+                            :value="device?.id"></option>
                 </template>
             </select>
         </div>

@@ -62,6 +62,10 @@ document.addEventListener('alpine:init', () => {
             this.devices = devices;
             this.selectedDevice = devices[0];
         },
+        changeDevices(event) {
+            const deviceId = event.target.value;
+            this.selectedDevice = this.devices.find(device => device.id === deviceId);
+        }
     });
 
     Alpine.store('qrCode', {
