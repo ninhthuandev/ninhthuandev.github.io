@@ -15,7 +15,20 @@
 <%- include(rootPath + '/common/ejs/nav-bar-with-data', {navbarLinks: [{"name": "QR Code tools", "href": "/qr-code-tools"}]}) %>
 
 <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
+        <button class="btn col-5 col-md-3 col-lg-2"
+                :class="$store.tab.isTab(Tabs.CAMERA) ? 'btn-secondary' : 'btn-outline-secondary'"
+                @click="$store.tab.switchTab(Tabs.CAMERA)">
+            Camera
+        </button>
+
+        <button class="btn col-5 col-md-3 col-lg-2 ms-3"
+                :class="$store.tab.isTab(Tabs.FILE_UPLOAD) ? 'btn-secondary' : 'btn-outline-secondary'"
+                @click="$store.tab.switchTab(Tabs.FILE_UPLOAD)">
+            File Upload
+        </button>
+    </div>
+    <div class="row" x-show="$store.tab.isTab(Tabs.CAMERA)">
         <div class="col-12">
             <label>Select your camera</label>
             <select class="form-select"
@@ -39,6 +52,14 @@
                 Stop Scanning
             </button>
         </div>
+    </div>
+    <div class="row" style="display: none" x-show="$store.tab.isTab(Tabs.FILE_UPLOAD)">
+        <div class="col-12 mt-3">
+            <label>Upload QR Code image</label>
+            <input type="file" accept="image/png, image/jpeg" class="form-control" @change="decodeQrCodeFromImage($event)">
+        </div>
+    </div>
+    <div class="row">
         <div class="col-12 d-flex justify-content-center mt-3">
             <div class="card w-100" x-show="$store.qrCode.decodedText">
                 <div class="card-body">
@@ -46,8 +67,16 @@
                 </div>
             </div>
         </div>
+        <div class="col-12 d-flex justify-content-center mt-3">
+            <div class="card bg-danger text-bg-danger w-100" x-show="$store.qrCode.isError" style="display: none">
+                <div class="card-body">
+                    <p class="m-0 p-0">Cannot read the image</p>
+                </div>
+            </div>
+        </div>
         <div class="col-12 mt-3 d-flex justify-content-center">
-            <div id="reader" style="width: 500px;"></div>
+            <div id="reader" style="width: 500px;" x-show="$store.tab.isTab(Tabs.CAMERA)"></div>
+            <div id="file-reader" style="width: 500px" x-show="$store.tab.isTab(Tabs.FILE_UPLOAD)"></div>
         </div>
     </div>
 </div>

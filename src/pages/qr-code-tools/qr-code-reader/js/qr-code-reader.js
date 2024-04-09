@@ -1,4 +1,5 @@
-const html5QrCode = new Html5Qrcode("reader");
+const html5QrCodeForCamera = new Html5Qrcode("reader");
+const html5QrCodeForFileUpload = new Html5Qrcode("file-reader");
 
 function startScanningQrCode(cameraId) {
     const windowWidth = window.innerWidth;
@@ -19,14 +20,14 @@ function startScanningQrCode(cameraId) {
         Alpine.store('qrCode').setScanning(true);
     }
 
-    html5QrCode.start(
+    html5QrCodeForCamera.start(
         cameraId,
         {
             fps: 10,
             qrbox: {width: qrBoxSize, height: qrBoxSize}  // Optional, if you want bounded box UI
         },
         (decodedText, decodedResult) => {
-            html5QrCode.stop().then(ignore => {
+            html5QrCodeForCamera.stop().then(ignore => {
                 console.log("QR Code stopped", ignore);
             }).catch(err => {
                 console.log("Error", err);
@@ -44,17 +45,63 @@ function startScanningQrCode(cameraId) {
 
 }
 
+function decodeQrCodeFromImage(event) {
+    const files = event.target.files;
+    if (files.length === 0) {
+        return;
+    }
+    const imageFile = event.target.files[0];
+    // Scan QR Code
+    html5QrCodeForFileUpload.scanFile(imageFile, true)
+        .then(decodedText => {
+            Alpine.store('qrCode').setDecodedInfo(decodedText, null);
+        })
+        .catch(err => {
+            console.log("Error cannot decode QR Code from image", err);
+            Alpine.store('qrCode').setDecodedInfo(null, null, true);
+        });
+}
+
 function stopScanningQrCode() {
-    html5QrCode.stop().then(ignore => {
-        console.log("QR Code stopped", ignore);
-    }).catch(err => {
-        console.log("Error", err);
-    }).finally(() => {
+    try {
+        html5QrCodeForCamera.stop().then(ignore => {
+            console.log("QR Code stopped", ignore);
+        }).catch(err => {
+            console.log("Error", err);
+            html5QrCodeForCamera.clear();
+        }).finally(() => {
+            Alpine.store('qrCode').setScanning(false);
+        });
+    } catch (err) {
+        html5QrCodeForCamera.clear();
+        console.error("ERR: ",err);
+    } finally {
         Alpine.store('qrCode').setScanning(false);
-    });
+    }
+}
+
+const Tabs = {
+    CAMERA: 'CAMERA',
+    FILE_UPLOAD: 'FILE_UPLOAD',
 }
 
 document.addEventListener('alpine:init', () => {
+    Alpine.store('tab', {
+        selectedTab: Tabs.CAMERA,
+
+        isTab(tab) {
+            return this.selectedTab === tab;
+        },
+
+        switchTab(tab) {
+            this.selectedTab = tab;
+
+            Alpine.store('qrCode').setDecodedInfo(undefined, undefined);
+            html5QrCodeForCamera.clear();
+            html5QrCodeForFileUpload.clear();
+        }
+    });
+
     Alpine.store('cameraDevices', {
         devices: [{id: '', label: ''}],
         selectedDevice: {},
@@ -72,10 +119,12 @@ document.addEventListener('alpine:init', () => {
         decodedText: undefined,
         decodedResult: undefined,
         scanning: false,
+        isError: false,
 
-        setDecodedInfo(decodedText, decodedResult) {
+        setDecodedInfo(decodedText, decodedResult, isError = false) {
             this.decodedText = decodedText;
             this.decodedResult = decodedResult;
+            this.isError = isError;
         },
         setScanning(scanning) {
             this.scanning = scanning;
