@@ -280,8 +280,18 @@
             </div>
         </div>
 
-        <div class="col-12 col-lg-3 pb-3 pb-lg-0 d-flex justify-content-center order-0 order-lg-1">
+        <div class="col-12 col-lg-3 pb-3 pb-lg-0 d-flex flex-column align-items-center order-0 order-lg-1">
             <div id="qr-code-image"></div>
+            <div class="btn-group flex-shrink-1">
+                <button class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Download
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#" @click="downloadQrCode(MimeType.PNG)">PNG</a></li>
+                    <li><a class="dropdown-item" href="#" @click="downloadQrCode(MimeType.JPG)">JPG</a></li>
+                    <li><a class="dropdown-item" href="#" @click="downloadQrCode(MimeType.SVG)">SVG</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

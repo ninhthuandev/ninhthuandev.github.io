@@ -7,6 +7,12 @@ const QrCodeType = {
     WIFI: 'WIFI',
 }
 
+const MimeType = {
+    PNG: 'image/png',
+    SVG: 'image/svg+xml',
+    JPG: 'image/jpeg',
+}
+
 const urlRegex = /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/gm;
 
 function validateForm(field) {
@@ -20,6 +26,32 @@ function validateForm(field) {
         this.validation[field].error = false;
         this.validation[field].message = '';
     }
+}
+
+function triggerDownloadImage(qrCodeBlobImage, mimeType) {
+    const link = document.createElement('a');
+    link.href = qrCodeBlobImage;
+    link.download = 'qr-code.' + Object.keys(MimeType).find(key => MimeType[key] === mimeType).toLowerCase();
+    link.click();
+}
+
+function downloadQrCode(mimeType) {
+    const qrCodeImageContainer = document.getElementById('qr-code-image');
+    // const qrCodeCanvas = qrCodeImageContainer.querySelector('canvas');
+    // const qrCodeImage = qrCodeCanvas.toDataURL(mimeType);
+    Alpine.store('qrCode').getBlobQrCodeForDownloading(mimeType).then((blob) => {
+        if (mimeType !== MimeType.SVG) {
+            const qrCodeBlobImage = URL.createObjectURL(blob);
+            triggerDownloadImage(qrCodeBlobImage, mimeType);
+        }
+    });
+    // if (mimeType !== MimeType.SVG) {
+    //     triggerDownloadImage(qrCodeImage);
+    // } else {
+    //     const ctx = new C2S(500, 500);
+    //     ctx.fillStyle="white";
+    //
+    // }
 }
 
 document.addEventListener('alpine:init', () => {
@@ -101,7 +133,7 @@ document.addEventListener('alpine:init', () => {
         address: '',
         website: '',
         toQrCodeStringFromVCardData() {
-            let str= `BEGIN:VCARD
+            let str = `BEGIN:VCARD
             VERSION:3.0
             N:${this.lastName};${this.firstName};;;
             FN:${this.firstName} ${this.lastName}
@@ -139,6 +171,12 @@ document.addEventListener('alpine:init', () => {
         }
     }));
 
+    const defaultQrCodeOptions = {
+        correctLevel: QRCode.CorrectLevel.M,
+        drawer: 'canvas',
+        quietZone: 20,
+    }
+
     Alpine.store('qrCode', {
         type: QrCodeType.TEXT,
         value: '',
@@ -146,8 +184,8 @@ document.addEventListener('alpine:init', () => {
 
         generateQrCode() {
             let options = {
+                ...defaultQrCodeOptions,
                 text: this.value,
-                correctLevel: QRCode.CorrectLevel.M,
             };
             if (!this.qrCode) {
                 this.qrCode = new QRCode(document.getElementById('qr-code-image'), options);
@@ -155,6 +193,31 @@ document.addEventListener('alpine:init', () => {
             } else {
                 this.qrCode.makeCode(this.value);
             }
+        },
+
+        getBlobQrCodeForDownloading(mimeType) {
+            let options = {
+                ...defaultQrCodeOptions,
+                text: this.value,
+                drawer: mimeType === MimeType.SVG ? 'svg' : 'canvas',
+                onRenderingEnd: (_, data) => {
+                    if (mimeType === MimeType.SVG) {
+                        let blob = new Blob([data], {type: MimeType.SVG});
+
+                        let objectUrl = URL.createObjectURL(blob);
+
+                        triggerDownloadImage(objectUrl, mimeType);
+                    } else {
+                        triggerDownloadImage(data, mimeType);
+                    }
+                }
+            };
+
+            let fakeElement = document.createElement('div');
+
+            fakeElement.style.width = '1000px';
+            let qrCode = new QRCode(fakeElement, options);
+            qrCode.makeCode(this.value);
         },
 
         changeValueAndGenerateQrCode(value) {
