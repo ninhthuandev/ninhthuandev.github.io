@@ -1,0 +1,93 @@
+{
+  "messageDigests": [
+    {
+      "group": "MD",
+      "children": [
+        {
+          "type": "MD2",
+          "displayName": "MD2"
+        },
+        {
+          "type": "MD5",
+          "displayName": "MD5"
+        }
+      ]
+    },
+    {
+      "group": "SHA-1",
+      "children": [
+        {
+          "type": "SHA1",
+          "displayName": "SHA-1"
+        }
+      ]
+    },
+    {
+      "group": "SHA-2",
+      "children": [
+        {
+          "type": "SHA224",
+          "displayName": "SHA-224"
+        },
+        {
+          "type": "SHA256",
+          "displayName": "SHA-256"
+        },
+        {
+          "type": "DOUBLE_SHA256",
+          "displayName": "DOUBLE SHA-256"
+        },
+        {
+          "type": "SHA384",
+          "displayName": "SHA-384"
+        },
+        {
+          "type": "SHA512",
+          "displayName": "SHA-512"
+        },
+        {
+          "type": "SHA512_224",
+          "displayName": "SHA-512/224"
+        },
+        {
+          "type": "SHA512_256",
+          "displayName": "SHA-512/256"
+        }
+      ]
+    },
+    {
+      "group": "SHA-3",
+      "children": [
+        {
+          "type": "SHA3_224",
+          "displayName": "SHA3-224"
+        },
+        {
+          "type": "SHA3_256",
+          "displayName": "SHA3-256"
+        },
+        {
+          "type": "SHA3_384",
+          "displayName": "SHA3-384"
+        },
+        {
+          "type": "SHA3_512",
+          "displayName": "SHA3-512"
+        }
+      ]
+    },
+    {
+      "group": "CRC",
+      "children": [
+        {
+          "type": "CRC16",
+          "displayName": "CRC-16"
+        },
+        {
+          "type": "CRC32",
+          "displayName": "CRC-32"
+        }
+      ]
+    }
+  ]
+}

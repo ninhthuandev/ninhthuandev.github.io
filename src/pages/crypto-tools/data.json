@@ -1,0 +1,40 @@
+{
+  "tools": [
+    {
+      "name": "Message Digest",
+      "description": "Message Digest tools",
+      "comingSoon": false,
+      "href": "/crypto-tools/message-digest"
+    },
+    {
+      "name": "PKI",
+      "description": "PKI tools",
+      "comingSoon": true,
+      "href": "#"
+    },
+    {
+      "name": "PBKDF2",
+      "description": "PBKDF2 tools",
+      "comingSoon": true,
+      "href": "#"
+    },
+    {
+      "name": "Ciphers",
+      "description": "Ciphers tools",
+      "comingSoon": true,
+      "href": "#"
+    },
+    {
+      "name": "Encoders",
+      "description": "Encoders tools",
+      "comingSoon": true,
+      "href": "#"
+    },
+    {
+      "name": "Decoders",
+      "description": "Decoders tools",
+      "comingSoon": true,
+      "href": "#"
+    }
+  ]
+}

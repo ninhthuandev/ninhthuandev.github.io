@@ -15,8 +15,8 @@
     {
       "name": "Crypto Tools",
       "description": "A collection of tools for working with cryptographic algorithms.",
-      "comingSoon": true,
-      "href": "#"
+      "comingSoon": false,
+      "href": "/crypto-tools"
     },
     {
       "name": "Datetime Tools",

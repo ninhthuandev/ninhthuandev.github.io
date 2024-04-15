@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Message digest tools</title>
+
+    <%- include(rootPath + '/common/ejs/head-link-end-script'); %>
+    <script src="js/js-crc.js"></script>
+    <script src="js/js-md2.js"></script>
+    <script src="js/js-md4.js"></script>
+    <script src="js/js-md5.js"></script>
+    <script src="js/js-sha1.js"></script>
+    <script src="js/js-sha256.js"></script>
+    <script src="js/js-sha512.js"></script>
+    <script src="js/js-sha3.js"></script>
+    <script src="js/message-digest.js"></script>
+    <script src="js/encoding.min.js"></script>
+</head>
+<body x-data :data-bs-theme="$store.theme.value">
+
+<%- include(rootPath + '/common/ejs/nav-bar-with-data', {navbarLinks: [{"name": "Crypto tools", "href": "/crypto-tools"}]}) %>
+
+<div class="container">
+    <div class="row justify-content-center mb-3">
+        <div class="col-10 col-md-4 col-lg-3">
+            <button class="btn btn-secondary w-100" data-bs-toggle="collapse" data-bs-target="#collapseAlgorithm"
+                    aria-expanded="false" aria-controls="collapseAlgorithm">
+                Select algorithm
+            </button>
+        </div>
+    </div>
+
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 collapse" id="collapseAlgorithm">
+        <% for(let messageDigest of messageDigests) { %>
+            <div class="col text-center">
+                <h3><%= messageDigest.group %></h3>
+                <% for(let child of messageDigest.children) { %>
+                <button class="btn mb-2"
+                        :class="$store.messageDigest.isType('<%= child.type %>') ? 'btn-secondary' : 'btn-outline-secondary'"
+                        @click="$store.messageDigest.updateSelectedType('<%= child.type %>', '<%= child.displayName %>')">
+                    <%= child.displayName %>
+                </button>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="text-center" x-text="'Selected algorithm: ' + $store.messageDigest.selectedTypeDisplayName">
+                        Selected algorithm: MD5
+                    </h5>
+                    <div class="mb-3">
+                        <label class="form-label">Input: </label>
+                        <textarea class="form-control" rows="3"
+                                  @keyup.debounce="$store.messageDigest.changeInput($event)"></textarea>
+                    </div>
+                    <div class="mb-3 text-center d-flex align-items-center justify-content-center">
+                        <button class="btn btn-success me-3" @click="$store.messageDigest.generateOutput()">
+                            Generate
+                        </button>
+                        <div>
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   x-model="$store.messageDigest.autoGenerate"
+                                   @change="$store.messageDigest.autoGenerate = $event.target.checked"
+                                   id="autoGenerateCheckbox">
+                            <label class="form-check-label" for="autoGenerateCheckbox">
+                            Auto generate
+                        </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Output: </label>
+                        <textarea class="form-control" rows="3" x-model="$store.messageDigest.output" disabled></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/common/js/index.js"></script>
+</body>
+</html>
