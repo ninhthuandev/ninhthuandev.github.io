@@ -1,70 +1,93 @@
-function text2Unit8Array(string, encoding) {
-    let textEncoder = new TextEncoder();
-    return textEncoder.encode(string);
-}
-
-function encode(s) {
-    return unescape(encodeURIComponent(s));
-}
-
-function decode(s) {
-    return decodeURIComponent(escape(s));
-}
-
 document.addEventListener('alpine:init', () => {
-    const str = 'Thuбєn';
-    const utf8String = text2Unit8Array(str, 'window-1251');
-
-    console.log(utf8String);
-    console.log(md5(utf8String));
-    console.log(text2Unit8Array('Thuận', 'utf-8'));
-    console.log(md5(text2Unit8Array('Thuận', 'utf-8')))
-
     Alpine.store('messageDigest', {
         selectedType: 'MD5',
         selectedTypeDisplayName: 'MD5',
+        supportedHmac: true,
+        supportedFile: true,
         input: '',
         output: '',
         usingHmac: false,
-        hmacKey: '',
+        usingFile: false,
+        secretKey: '',
         autoGenerate: true,
 
         isType(type) {
             return this.selectedType === type;
         },
-        changeInput(event) {
-            console.log(event.target.value)
-            this.input = event.target.value;
+        setInput(value) {
+            this.input = value;
 
             if (this.autoGenerate) {
                 this.generateOutput();
             }
         },
-        updateSelectedType(type, displayName) {
+        changeInput(event) {
+            this.setInput(event.target.value);
+        },
+        changeInputWithFile(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                this.setInput(e.target.result);
+            };
+
+            reader.readAsArrayBuffer(file);
+        },
+        changeSecret(event) {
+            this.secretKey = event.target.value;
+
+            if (this.autoGenerate) {
+                this.generateOutput();
+            }
+        },
+        updateSelectedType(type, displayName, supportedHmac = true) {
             this.selectedType = type;
             this.selectedTypeDisplayName = displayName;
+            this.supportedHmac = supportedHmac === 'true';
+            this.supportedFile = type !== 'DOUBLE_SHA256';
+
+            if (!this.supportedHmac) {
+                this.usingHmac = false;
+            }
+
+            if (!this.supportedFile) {
+                this.changeUsingFile(false);
+            }
 
             this.generateOutput();
         },
+        changeUsingHmac(value) {
+          this.usingHmac = value;
+          this.setInput(this.input)
+        },
+        changeUsingFile(value) {
+            this.usingFile = value;
+            this.setInput('');
+
+            if (!this.usingFile) {
+                document.getElementById('formFile').value = '';
+            }
+        },
         generateOutput() {
-            console.log(this.selectedType);
-
+            console.log("Generate output");
             if (this.input !== '') {
-                switch (this.selectedType) {
-                    case 'DOUBLE_SHA256':
-                        this.output = sha256(sha256.arrayBuffer(this.input));
-                        break;
-                    case 'SHAKE128':
-                        this.output = shake128(this.input, 256);
-                        break;
-                    case 'SHAKE256':
-                        this.output = shake256(this.input, 512);
-                        break;
-                    default:
-                        this.output = window[this.selectedType.toLowerCase()](this.input);
-                        break;
+                if (this.usingHmac) {
+                    switch (this.selectedType) {
+                        default:
+                            this.output = window[this.selectedType.toLowerCase()].hmac(this.secretKey, this.input);
+                            break;
+                    }
+                } else {
+                    switch (this.selectedType) {
+                        case 'DOUBLE_SHA256':
+                            this.output = sha256(sha256.arrayBuffer(this.input));
+                            break;
+                        default:
+                            this.output = window[this.selectedType.toLowerCase()](this.input);
+                            break;
+                    }
                 }
-
             } else {
                 this.output = '';
             }

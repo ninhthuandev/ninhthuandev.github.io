@@ -5,11 +5,18 @@
       "children": [
         {
           "type": "MD2",
-          "displayName": "MD2"
+          "displayName": "MD2",
+          "supportedHmac": true
+        },
+        {
+          "type": "MD4",
+          "displayName": "MD4",
+          "supportedHmac": true
         },
         {
           "type": "MD5",
-          "displayName": "MD5"
+          "displayName": "MD5",
+          "supportedHmac": true
         }
       ]
     },
@@ -18,7 +25,8 @@
       "children": [
         {
           "type": "SHA1",
-          "displayName": "SHA-1"
+          "displayName": "SHA-1",
+          "supportedHmac": true
         }
       ]
     },
@@ -27,31 +35,38 @@
       "children": [
         {
           "type": "SHA224",
-          "displayName": "SHA-224"
+          "displayName": "SHA-224",
+          "supportedHmac": true
         },
         {
           "type": "SHA256",
-          "displayName": "SHA-256"
+          "displayName": "SHA-256",
+          "supportedHmac": true
         },
         {
           "type": "DOUBLE_SHA256",
-          "displayName": "DOUBLE SHA-256"
+          "displayName": "DOUBLE SHA-256",
+          "supportedHmac": false
         },
         {
           "type": "SHA384",
-          "displayName": "SHA-384"
+          "displayName": "SHA-384",
+          "supportedHmac": true
         },
         {
           "type": "SHA512",
-          "displayName": "SHA-512"
+          "displayName": "SHA-512",
+          "supportedHmac": true
         },
         {
           "type": "SHA512_224",
-          "displayName": "SHA-512/224"
+          "displayName": "SHA-512/224",
+          "supportedHmac": true
         },
         {
           "type": "SHA512_256",
-          "displayName": "SHA-512/256"
+          "displayName": "SHA-512/256",
+          "supportedHmac": true
         }
       ]
     },
@@ -60,19 +75,23 @@
       "children": [
         {
           "type": "SHA3_224",
-          "displayName": "SHA3-224"
+          "displayName": "SHA3-224",
+          "supportedHmac": false
         },
         {
           "type": "SHA3_256",
-          "displayName": "SHA3-256"
+          "displayName": "SHA3-256",
+          "supportedHmac": false
         },
         {
           "type": "SHA3_384",
-          "displayName": "SHA3-384"
+          "displayName": "SHA3-384",
+          "supportedHmac": false
         },
         {
           "type": "SHA3_512",
-          "displayName": "SHA3-512"
+          "displayName": "SHA3-512",
+          "supportedHmac": false
         }
       ]
     },
@@ -81,11 +100,13 @@
       "children": [
         {
           "type": "CRC16",
-          "displayName": "CRC-16"
+          "displayName": "CRC-16",
+          "supportedHmac": false
         },
         {
           "type": "CRC32",
-          "displayName": "CRC-32"
+          "displayName": "CRC-32",
+          "supportedHmac": false
         }
       ]
     }
