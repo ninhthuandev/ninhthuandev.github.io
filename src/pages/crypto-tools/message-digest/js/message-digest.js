@@ -37,9 +37,7 @@ document.addEventListener('alpine:init', () => {
         changeSecret(event) {
             this.secretKey = event.target.value;
 
-            if (this.autoGenerate) {
-                this.generateOutput();
-            }
+            this.setInput(this.input);
         },
         updateSelectedType(type, displayName, supportedHmac = true) {
             this.selectedType = type;
@@ -48,22 +46,29 @@ document.addEventListener('alpine:init', () => {
             this.supportedFile = type !== 'DOUBLE_SHA256';
 
             if (!this.supportedHmac) {
-                this.usingHmac = false;
+                this.changeUsingHmac(false);
             }
 
             if (!this.supportedFile) {
                 this.changeUsingFile(false);
             }
 
-            this.generateOutput();
+            this.setInput(this.input);
         },
         changeUsingHmac(value) {
           this.usingHmac = value;
+          this.secretKey = '';
           this.setInput(this.input)
         },
         changeUsingFile(value) {
+            let isChangeUsingFile = this.usingFile !== value;
             this.usingFile = value;
-            this.setInput('');
+
+            if (isChangeUsingFile) {
+                this.setInput('');
+            } else {
+                this.setInput(this.input);
+            }
 
             if (!this.usingFile) {
                 document.getElementById('formFile').value = '';

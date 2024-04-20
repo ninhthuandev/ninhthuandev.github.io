@@ -76,11 +76,13 @@
                     <div class="mb-3" x-show="$store.messageDigest.usingHmac && $store.messageDigest.supportedHmac">
                         <label class="form-label">Secret Key: </label>
                         <textarea class="form-control" rows="2"
+                                  x-model="$store.messageDigest.secretKey"
                                   @keyup.debounce="$store.messageDigest.changeSecret($event)"></textarea>
                     </div>
                     <div class="mb-3" x-show="!$store.messageDigest.usingFile">
                         <label class="form-label">Input: </label>
                         <textarea class="form-control" rows="3"
+                                  x-model="$store.messageDigest.input"
                                   @keyup.debounce="$store.messageDigest.changeInput($event)"></textarea>
                     </div>
                     <div class="mb-3" x-show="$store.messageDigest.usingFile">

@@ -1,0 +1,2 @@
+"use strict";document.addEventListener("alpine:init",function(){Alpine.store("encodeDecode",{selectedType:"BASE64",selectedTypeDisplayName:"Base-64",supportedFile:!1,isType:function(e){return this.selectedType===e},setSelectedType:function(e,t){this.selectedType=e,this.selectedTypeDisplayName=t},changeSupportedInputFile:function(e){this.supportedInputFile=e}})});
+//# sourceMappingURL=encode-decode.js.map

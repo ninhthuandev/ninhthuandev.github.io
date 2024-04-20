@@ -25,16 +25,10 @@
       "href": "#"
     },
     {
-      "name": "Encoders",
-      "description": "Encoders tools",
-      "comingSoon": true,
-      "href": "#"
-    },
-    {
-      "name": "Decoders",
-      "description": "Decoders tools",
-      "comingSoon": true,
-      "href": "#"
+      "name": "Encode/Decode",
+      "description": "Encode/Decode tools",
+      "comingSoon": false,
+      "href": "/crypto-tools/encode-decode"
     }
   ]
 }

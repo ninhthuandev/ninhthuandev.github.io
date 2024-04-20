@@ -1,0 +1,19 @@
+{
+  "encodeDecodeTools": [
+    {
+      "group": "BASE32",
+      "displayName": "Base-32",
+      "supportedFile": true
+    },
+    {
+      "group": "BASE58",
+      "displayName": "Base-58",
+      "supportedFile": true
+    },
+    {
+      "group": "BASE64",
+      "displayName": "Base-64",
+      "supportedFile": true
+    }
+  ]
+}
