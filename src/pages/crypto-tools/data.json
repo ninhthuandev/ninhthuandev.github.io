@@ -7,6 +7,12 @@
       "href": "/crypto-tools/message-digest"
     },
     {
+      "name": "Encode/Decode",
+      "description": "Encode/Decode tools",
+      "comingSoon": false,
+      "href": "/crypto-tools/encode-decode"
+    },
+    {
       "name": "PKI",
       "description": "PKI tools",
       "comingSoon": true,
@@ -23,12 +29,6 @@
       "description": "Ciphers tools",
       "comingSoon": true,
       "href": "#"
-    },
-    {
-      "name": "Encode/Decode",
-      "description": "Encode/Decode tools",
-      "comingSoon": false,
-      "href": "/crypto-tools/encode-decode"
     }
   ]
 }
