@@ -202,7 +202,11 @@ document.addEventListener('alpine:init', () => {
                 drawer: mimeType === MimeType.SVG ? 'svg' : 'canvas',
                 onRenderingEnd: (_, data) => {
                     if (mimeType === MimeType.SVG) {
-                        let blob = new Blob([data], {type: MimeType.SVG});
+                        const svgString =
+                        `<?xml version="1.0" encoding="iso-8859-1"?>
+                        ${data}`
+
+                        let blob = new Blob([svgString], {type: MimeType.SVG});
 
                         let objectUrl = URL.createObjectURL(blob);
 
