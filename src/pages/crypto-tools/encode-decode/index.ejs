@@ -118,6 +118,10 @@
                                     @click="$store.encodeDecode.downloadOutputAsFile()">Download file</button>
                         </div>
                     </div>
+                    <div class="mb-3" x-show="$store.encodeDecode.outputType === Type.FILE && $store.encodeDecode.outputFileMimeType !== null">
+                        <p>Mime type: <span x-text="$store.encodeDecode.outputFileMimeType"></span></p>
+                        <img class="w-50" x-show="$store.encodeDecode.outputPreviewData" :src="$store.encodeDecode.outputPreviewData" alt=""/>
+                    </div>
                 </div>
             </div>
         </div>
