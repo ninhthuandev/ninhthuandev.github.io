@@ -122,6 +122,9 @@
                         <p>Mime type: <span x-text="$store.encodeDecode.outputFileMimeType"></span></p>
                         <img class="w-50" x-show="$store.encodeDecode.outputPreviewData" :src="$store.encodeDecode.outputPreviewData" alt=""/>
                     </div>
+                    <p class="text-danger"
+                       x-show="$store.encodeDecode.outputErrorMessage"
+                       x-text="$store.encodeDecode.outputErrorMessage"></p>
                 </div>
             </div>
         </div>

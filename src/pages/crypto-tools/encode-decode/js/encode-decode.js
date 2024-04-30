@@ -202,6 +202,7 @@ document.addEventListener('alpine:init', () => {
         mode: Mode.ENCODE,
 
         errorMessage: '',
+        outputErrorMessage: '',
 
         isType(type) {
             return this.selectedType === type;
@@ -296,8 +297,6 @@ document.addEventListener('alpine:init', () => {
             }
         },
         downloadOutputAsFile() {
-            this.setInput(this.input);
-
             const fileExtension = this.outputFileName.split('.').pop();
             // let mimeType = mime.getType(fileExtension);
 
@@ -356,6 +355,7 @@ document.addEventListener('alpine:init', () => {
             } else {
                 this.outputFileName = 'output.txt';
                 this.outputFileMimeType = null;
+                this.outputErrorMessage = 'Cannot determine file type. You can fill the file extension manually.';
             }
         }
     })
