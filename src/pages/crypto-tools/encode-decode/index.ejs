@@ -80,7 +80,12 @@
                     </div>
                     <p class="mt-0 text-danger" x-show="$store.encodeDecode.errorMessage"
                        x-text="$store.encodeDecode.errorMessage"></p>
-                    <div class="mb-3 mt-5" x-show="$store.encodeDecode.supportedFile">
+                    <div class="mb-3 text-center">
+                        <button class="btn btn-success" @click="$store.encodeDecode.execute()">
+                            Execute
+                        </button>
+                    </div>
+                    <div class="mb-3" x-show="$store.encodeDecode.supportedFile">
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle"
                                     type="button"

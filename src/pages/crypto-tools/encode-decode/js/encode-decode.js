@@ -264,6 +264,9 @@ document.addEventListener('alpine:init', () => {
                 this.inputType = Type.TEXT;
             }
         },
+        execute() {
+            this.setInput(this.input);
+        },
         changeInput(event) {
             this.setInput(event.target.value);
         },
