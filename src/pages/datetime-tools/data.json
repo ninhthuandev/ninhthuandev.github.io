@@ -1,0 +1,16 @@
+{
+  "tools": [
+    {
+      "name": "Timezone converter",
+      "description": "Convert date-time between different time zones.",
+      "comingSoon": false,
+      "href": "/datetime-tools/timezone-converter"
+    },
+    {
+      "name": "Datetime converter",
+      "description": "Convert to datetime from timestamp and vice versa.",
+      "comingSoon": true,
+      "href": "#"
+    }
+  ]
+}

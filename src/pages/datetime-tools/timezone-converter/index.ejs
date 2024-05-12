@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Timezone converter tools</title>
+
+    <%- include(rootPath + '/common/ejs/head-link-end-script'); %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.02.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
+</head>
+<body x-data :data-bs-theme="$store.theme.value">
+<style>
+  .autoComplete_wrapper>ul>li mark {
+    padding: 0;
+    color: var(--bs-success);
+  }
+</style>
+
+<%- include(rootPath + '/common/ejs/nav-bar-with-data') %>
+
+<%- include(rootPath + '/common/ejs/side-nav-start') %>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="datetime-picker-input" class="form-label">Pick date time</label>
+                    <input type="text" class="form-control dark" id="datetime-picker-input"
+                           x-model="$store.timeZone.inputDateTime"
+                           @change="$store.timeZone.changeInputDateTime($event)">
+                </div>
+                <div class="mb-3">
+                    <label for="autoCompleteInputTimeZone" class="mb-2">From time zone</label>
+                    <div class="autoComplete_wrapper d-block">
+                        <input id="autoCompleteInputTimeZone" class="form-control text-body" type="text"
+                               autocorrect="off" autocomplete="off"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3 mb-3">
+            <button class="btn btn-success" @click="$store.timeZone.convertTZ()">
+                Convert
+            </button>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="autoCompleteOutputTimeZone">To time zone</label>
+                    <div class="autoComplete_wrapper d-block">
+                        <input id="autoCompleteOutputTimeZone" class="form-control text-body" type="text"
+                               autocorrect="off" autocomplete="off"/>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Result</label>
+                    <input type="text" class="form-control dark" disabled x-model="$store.timeZone.outputDateTime">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include(rootPath + '/common/ejs/side-nav-end') %>
+
+<script src="/common/js/index.js"></script>
+<script src="js/timezone-coverter.js"></script>
+</body>
+</html>

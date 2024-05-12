@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Datetime tools</title>
+
+    <%- include(rootPath + '/common/ejs/head-link-end-script'); %>
+</head>
+<body x-data :data-bs-theme="$store.theme.value">
+
+<%- include(rootPath + '/common/ejs/nav-bar-with-data') %>
+
+<%- include(rootPath + '/common/ejs/side-nav-start') %>
+<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2">
+    <%- include(rootPath + '/common/ejs/list-tools'); %>
+</div>
+<%- include(rootPath + '/common/ejs/side-nav-end') %>
+
+<script src="/common/js/index.js"></script>
+</body>
+</html>

@@ -77,17 +77,20 @@ function loadDataJsonFromDir(dirPath) {
 }
 
 function populateHierarchyDataJson(baseDir) {
-    const dirs = fs.readdirSync(baseDir);
-    let combinedData = loadDataJsonFromDir(baseDir);
-    combinedData?.tools?.forEach(toolData => {
-        const folderName = getLastSegments(toolData.href);
-        if (folderName !== null) {
-            const newPath = combinedData.isRoot === true ? baseDir + '/pages/' + folderName : baseDir + '/' + folderName;
-            toolData.children = populateHierarchyDataJson(newPath);
-        }
-    });
-
-    return combinedData;
+    try {
+        const dirs = fs.readdirSync(baseDir);
+        let combinedData = loadDataJsonFromDir(baseDir);
+        combinedData?.tools?.forEach(toolData => {
+            const folderName = getLastSegments(toolData.href);
+            if (folderName !== null) {
+                const newPath = combinedData.isRoot === true ? baseDir + '/pages/' + folderName : baseDir + '/' + folderName;
+                toolData.children = populateHierarchyDataJson(newPath);
+            }
+        });
+        return combinedData;
+    } catch (e) {
+        return {};
+    }
 }
 
 function buildEjs(cb) {
@@ -132,6 +135,7 @@ function buildCss(cb) {
 
 function watchBuild(cb) {
     gulp.watch('./src/**/*.ejs', buildEjs);
+    gulp.watch('./src/**/*.json', buildEjs);
     gulp.watch('./src/**/*.js', buildJs);
     gulp.watch('./src/**/*.css', buildCss);
     cb();

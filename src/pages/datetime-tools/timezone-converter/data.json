@@ -1,0 +1,16 @@
+{
+  "datetimeConverter": {
+    "types": [
+      {
+        "type": "LONG",
+        "displayName": "Long Number"
+      }, {
+        "type": "STRING",
+        "displayName": "String Format"
+      }, {
+        "type": "PICKER",
+        "displayName": "Datetime Picker"
+      }
+    ]
+  }
+}

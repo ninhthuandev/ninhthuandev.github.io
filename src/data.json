@@ -15,7 +15,7 @@
       "comingSoon": false,
       "href": "/qr-code-tools",
       "iconClasses": "bi bi-qr-code-scan",
-      "iconColor": "black"
+      "iconColor": "currentColor"
     },
     {
       "name": "Crypto Tools",
@@ -28,8 +28,8 @@
     {
       "name": "Datetime Tools",
       "description": "A collection of tools for working with dates and times.",
-      "comingSoon": true,
-      "href": "#",
+      "comingSoon": false,
+      "href": "/datetime-tools",
       "iconClasses": "bi bi-calendar2-fill",
       "iconColor": "#0084ff"
     }
