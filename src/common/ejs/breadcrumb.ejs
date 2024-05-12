@@ -1,0 +1,24 @@
+<div class="row">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <% if (hierarchyData?.tools && currentTool?.href) { %>
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <% for(let tool of hierarchyData?.tools) { %>
+                    <% if (currentTool?.href?.startsWith(tool.href) && currentTool.href.length === tool.href.length) { %>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <%= tool.name %>
+                        </li>
+                    <% } %>
+                    <% if (currentTool?.href?.startsWith(tool.href) && currentTool.href.length !== tool.href.length) { %>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <a href="<%= tool.href %>"><%= tool.name %></a>
+                        </li>
+                        <li class="breadcrumb-item active" href="currentTool.href" aria-current="page">
+                            <%= currentTool.name %>
+                        </li>
+                    <% } %>
+                <% } %>
+            <% } %>
+        </ol>
+    </nav>
+</div>

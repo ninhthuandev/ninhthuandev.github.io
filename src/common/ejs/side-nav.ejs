@@ -5,15 +5,25 @@
     border-radius: 4px;
   }
 
-  .nt-tools-links-item:hover {
+  .nt-tools-links-item:not(.disabled):hover {
     background-color: var(--bs-secondary-bg);
   }
 
-  .nt-tools-links-item.active {
+  .nt-tools-links-item:not(.disabled).active {
     background-color: var(--bs-secondary-bg);
   }
+
+  .nt-tools-links-item.disabled {
+    color: var(--bs-tertiary-color);
+  }
 </style>
-<div class="offcanvas-lg offcanvas-start">
+<div class="offcanvas-lg offcanvas-start" id="offCanvasSideNav">
+    <div class="offcanvas-header border-bottom">
+        <div class="offcanvas-title">
+            <h5 class="mb-0">Tools list</h5>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offCanvasSideNav" aria-label="Close"></button>
+    </div>
     <div class="offcanvas-body">
         <nav class="w-100">
             <ul class="nav flex-column">
@@ -28,8 +38,13 @@
                             <% if (data.children?.tools) { %>
                                 <% for(let childData of data.children.tools) { %>
                                     <li class="mt-2 ms-4 mb-3">
-                                        <a class="nt-tools-links-item text-body <%= currentTool !== undefined && childData.href === currentTool.href ? 'active' : '' %>"
-                                           href="<%= childData.href %>">
+                                        <a class="nt-tools-links-item
+                                                <%= currentTool !== undefined && childData.href === currentTool.href ? 'active' : '' %>
+                                                <%= childData.comingSoon ? 'disabled' : 'text-body' %>"
+                                           href="<%= childData.href %>"
+                                           data-bs-toggle="<%= childData.comingSoon ? 'tooltip' : 'text-body' %>"
+                                           data-bs-placement="right"
+                                           data-bs-title="Coming Soon">
                                             <%= childData.name %>
                                         </a>
                                     </li>
@@ -42,3 +57,7 @@
         </nav>
     </div>
 </div>
+<script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>

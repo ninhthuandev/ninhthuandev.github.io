@@ -35,9 +35,13 @@ function populateDataFromJsonPipe() {
             }
             file.data.currentTool = {};
             const currentDirName = getLastSegments(dirPath);
-            const parentDir = dirPath.substring(0, dirPath.lastIndexOf('\\'));
-            fs.readFile(parentDir + '/data.json', null, (err, parentData) => {
+            let parentDir = dirPath.substring(0, dirPath.lastIndexOf('\\'));
 
+            if(parentDir.endsWith('pages')) {
+                parentDir = parentDir.substring(0, parentDir.lastIndexOf('\\'));
+            }
+
+            fs.readFile(parentDir + '/data.json', null, (err, parentData) => {
                 if (parentData) {
                     const parentDataJson = JSON.parse(parentData);
                     parentDataJson.tools.forEach(toolData => {

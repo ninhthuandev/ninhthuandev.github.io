@@ -12,30 +12,7 @@
 </head>
 <body x-data :data-bs-theme="$store.theme.value">
 
-<nav class="navbar navbar-expand-lg border-bottom mb-3">
-    <div class="container">
-        <a class="navbar-brand me-auto" href="/">
-            <i class="bi bi-tools"></i>
-            NT Tools
-        </a>
-        <span class="ms-auto">
-            <button :class="{'btn btn-light': !$store.theme.isDark(), 'btn btn-dark': $store.theme.isDark()}"
-                    x-data @click="() => {$store.theme.toggle(); isDark = !$store.theme.isDark()}">
-                <i class="bi bi-brightness-high-fill"
-                   x-data x-show="!$store.theme.isDark()"></i>
-                <span x-data x-show="!$store.theme.isDark()">
-                    Light
-                </span>
-                <i class="bi bi-moon-stars-fill"
-                   x-data x-show="$store.theme.isDark()"></i>
-                <span x-data x-show="$store.theme.isDark()">
-                    Dark
-                </span>
-            </button>
-        </span>
-    </div>
-</nav>
-
+<%- include(rootPath + '/common/ejs/nav-bar-with-data') %>
 <%- include(rootPath + '/common/ejs/side-nav-start') %>
 <div class="row text-center">
     <h1>Make life easier with our one-stop toolkit.</h1>
