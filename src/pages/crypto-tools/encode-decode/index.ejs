@@ -12,129 +12,135 @@
 
 <%- include(rootPath + '/common/ejs/nav-bar-with-data', {navbarLinks: [{"name": "Crypto tools", "href": "/crypto-tools"}]}) %>
 
-<div class="container">
-    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 justify-content-center">
-        <% for(let encodeDecodeTool of encodeDecodeTools) { %>
-            <div class="col text-center">
-                <button class="btn mb-2 w-100"
-                        @click="$store.encodeDecode.setSelectedType('<%= encodeDecodeTool.group %>', '<%= encodeDecodeTool.displayName %>', '<%= encodeDecodeTool.supportedFile %>')"
-                        :class="$store.encodeDecode.isType('<%= encodeDecodeTool.group %>') ? 'btn-secondary' : 'btn-outline-secondary'"><%= encodeDecodeTool.displayName %></button>
+<%- include(rootPath + '/common/ejs/side-nav-start') %>
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 justify-content-center">
+                <% for(let encodeDecodeTool of encodeDecodeTools) { %>
+                    <div class="col text-center">
+                        <button class="btn mb-2 w-100"
+                                @click="$store.encodeDecode.setSelectedType('<%= encodeDecodeTool.group %>', '<%= encodeDecodeTool.displayName %>', '<%= encodeDecodeTool.supportedFile %>')"
+                                :class="$store.encodeDecode.isType('<%= encodeDecodeTool.group %>') ? 'btn-secondary' : 'btn-outline-secondary'"><%= encodeDecodeTool.displayName %></button>
+                    </div>
+                <% } %>
             </div>
-        <% } %>
-    </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="text-center" x-text="'Selected type: ' + $store.encodeDecode.selectedTypeDisplayName">
-                        Selected type: Base64
-                    </h5>
-                    <div class="mb-3">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   role="switch"
-                                   id="encodeDecodeMode"
-                                   @change="$store.encodeDecode.switchMode()">
-                            <label class="form-check-label" for="encodeDecodeMode">
-                                <span x-text="$store.encodeDecode.mode === Mode.ENCODE ? 'Encode' : 'Decode'">Encode</span>
-                                mode
-                            </label>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="text-center"
+                                x-text="'Selected type: ' + $store.encodeDecode.selectedTypeDisplayName">
+                                Selected type: Base64
+                            </h5>
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           role="switch"
+                                           id="encodeDecodeMode"
+                                           @change="$store.encodeDecode.switchMode()">
+                                    <label class="form-check-label" for="encodeDecodeMode">
+                                        <span x-text="$store.encodeDecode.mode === Mode.ENCODE ? 'Encode' : 'Decode'">Encode</span>
+                                        mode
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3" x-show="$store.encodeDecode.supportedFile">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle"
+                                            type="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                            :disabled="Mode.DECODE === $store.encodeDecode.mode">
+                                        Input <span
+                                                x-text="$store.encodeDecode.inputType === Type.TEXT ? 'Text' : 'File'">Text</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item"
+                                               href="#"
+                                               @click="$store.encodeDecode.changeInputType(Type.TEXT)">Input Text</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="#"
+                                               x-show="Mode.ENCODE === $store.encodeDecode.mode"
+                                               @click="$store.encodeDecode.changeInputType(Type.FILE)">Input File</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="mb-3" x-show="$store.encodeDecode.inputType === Type.TEXT">
+                                <label class="form-label">Input text: </label>
+                                <textarea class="form-control" rows="3"
+                                          x-model="$store.encodeDecode.input"
+                                          @keyup="$store.encodeDecode.changeInput($event)"></textarea>
+                            </div>
+                            <div class="mb-3" style="display: none"
+                                 x-show="$store.encodeDecode.inputType === Type.FILE">
+                                <label for="formFile" class="form-label">Select file</label>
+                                <input class="form-control" type="file" id="inputFile"
+                                       @change="$store.encodeDecode.changeInputWithFile($event)">
+                            </div>
+                            <p class="mt-0 text-danger" x-show="$store.encodeDecode.errorMessage"
+                               x-text="$store.encodeDecode.errorMessage"></p>
+                            <div class="mb-3 text-center">
+                                <button class="btn btn-success" @click="$store.encodeDecode.execute()">
+                                    Execute
+                                </button>
+                            </div>
+                            <div class="mb-3" x-show="$store.encodeDecode.supportedFile">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle"
+                                            type="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                            :disabled="Mode.ENCODE === $store.encodeDecode.mode">
+                                        Output <span
+                                                x-text="$store.encodeDecode.outputType === Type.TEXT ? 'Text' : 'File'">Text</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item"
+                                               href="#"
+                                               @click="$store.encodeDecode.changeOutputType(Type.TEXT)">Output Text</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="#"
+                                               x-show="Mode.DECODE === $store.encodeDecode.mode"
+                                               @click="$store.encodeDecode.changeOutputType(Type.FILE)">Output File</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="mb-3" x-show="$store.encodeDecode.outputType === Type.TEXT">
+                                <label class="form-label">Output Text: </label>
+                                <textarea class="form-control" rows="3" x-model="$store.encodeDecode.output"
+                                          disabled></textarea>
+                            </div>
+                            <div class="mb-3" x-show="$store.encodeDecode.outputType === Type.FILE">
+                                <label class="form-label">Output File Name: </label>
+                                <div class="input-group">
+                                    <input class="form-control" type="text"
+                                           x-model="$store.encodeDecode.outputFileName">
+                                    <button class="btn btn-outline-success"
+                                            type="button"
+                                            @click="$store.encodeDecode.downloadOutputAsFile()">Download file
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-3"
+                                 x-show="$store.encodeDecode.outputType === Type.FILE && $store.encodeDecode.outputFileMimeType !== null">
+                                <p>Mime type: <span x-text="$store.encodeDecode.outputFileMimeType"></span></p>
+                                <img class="w-50" x-show="$store.encodeDecode.outputPreviewData"
+                                     :src="$store.encodeDecode.outputPreviewData" alt=""/>
+                            </div>
+                            <p class="text-danger"
+                               x-show="$store.encodeDecode.outputErrorMessage"
+                               x-text="$store.encodeDecode.outputErrorMessage"></p>
                         </div>
                     </div>
-                    <div class="mb-3" x-show="$store.encodeDecode.supportedFile">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                    :disabled="Mode.DECODE === $store.encodeDecode.mode">
-                                Input <span
-                                        x-text="$store.encodeDecode.inputType === Type.TEXT ? 'Text' : 'File'">Text</span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item"
-                                       href="#"
-                                       @click="$store.encodeDecode.changeInputType(Type.TEXT)">Input Text</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       href="#"
-                                       x-show="Mode.ENCODE === $store.encodeDecode.mode"
-                                       @click="$store.encodeDecode.changeInputType(Type.FILE)">Input File</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="mb-3" x-show="$store.encodeDecode.inputType === Type.TEXT">
-                        <label class="form-label">Input text: </label>
-                        <textarea class="form-control" rows="3"
-                                  x-model="$store.encodeDecode.input"
-                                  @keyup="$store.encodeDecode.changeInput($event)"></textarea>
-                    </div>
-                    <div class="mb-3" style="display: none" x-show="$store.encodeDecode.inputType === Type.FILE">
-                        <label for="formFile" class="form-label">Select file</label>
-                        <input class="form-control" type="file" id="inputFile"
-                               @change="$store.encodeDecode.changeInputWithFile($event)">
-                    </div>
-                    <p class="mt-0 text-danger" x-show="$store.encodeDecode.errorMessage"
-                       x-text="$store.encodeDecode.errorMessage"></p>
-                    <div class="mb-3 text-center">
-                        <button class="btn btn-success" @click="$store.encodeDecode.execute()">
-                            Execute
-                        </button>
-                    </div>
-                    <div class="mb-3" x-show="$store.encodeDecode.supportedFile">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                    :disabled="Mode.ENCODE === $store.encodeDecode.mode">
-                                Output <span x-text="$store.encodeDecode.outputType === Type.TEXT ? 'Text' : 'File'">Text</span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item"
-                                       href="#"
-                                       @click="$store.encodeDecode.changeOutputType(Type.TEXT)">Output Text</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item"
-                                       href="#"
-                                       x-show="Mode.DECODE === $store.encodeDecode.mode"
-                                       @click="$store.encodeDecode.changeOutputType(Type.FILE)">Output File</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="mb-3" x-show="$store.encodeDecode.outputType === Type.TEXT">
-                        <label class="form-label">Output Text: </label>
-                        <textarea class="form-control" rows="3" x-model="$store.encodeDecode.output"
-                                  disabled></textarea>
-                    </div>
-                    <div class="mb-3" x-show="$store.encodeDecode.outputType === Type.FILE">
-                        <label class="form-label">Output File Name: </label>
-                        <div class="input-group">
-                            <input class="form-control" type="text"
-                                   x-model="$store.encodeDecode.outputFileName">
-                            <button class="btn btn-outline-success"
-                                    type="button"
-                                    @click="$store.encodeDecode.downloadOutputAsFile()">Download file</button>
-                        </div>
-                    </div>
-                    <div class="mb-3" x-show="$store.encodeDecode.outputType === Type.FILE && $store.encodeDecode.outputFileMimeType !== null">
-                        <p>Mime type: <span x-text="$store.encodeDecode.outputFileMimeType"></span></p>
-                        <img class="w-50" x-show="$store.encodeDecode.outputPreviewData" :src="$store.encodeDecode.outputPreviewData" alt=""/>
-                    </div>
-                    <p class="text-danger"
-                       x-show="$store.encodeDecode.outputErrorMessage"
-                       x-text="$store.encodeDecode.outputErrorMessage"></p>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+<%- include(rootPath + '/common/ejs/side-nav-end') %>
 
 <script src="/common/js/index.js"></script>
 <script src="js/encode-decode.js"></script>

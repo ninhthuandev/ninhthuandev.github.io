@@ -23,97 +23,101 @@
 
 <%- include(rootPath + '/common/ejs/nav-bar-with-data', {navbarLinks: [{"name": "Crypto tools", "href": "/crypto-tools"}]}) %>
 
-<div class="container">
-    <div class="row justify-content-center mb-3">
-        <div class="col-10 col-md-4 col-lg-3">
-            <button class="btn btn-secondary w-100" data-bs-toggle="collapse" data-bs-target="#collapseAlgorithm"
-                    aria-expanded="false" aria-controls="collapseAlgorithm">
-                Select algorithm
-            </button>
-        </div>
+<%- include(rootPath + '/common/ejs/side-nav-start') %>
+<div class="row justify-content-center mb-3">
+    <div class="col-10 col-md-4 col-lg-3">
+        <button class="btn btn-secondary w-100" data-bs-toggle="collapse"
+                data-bs-target="#collapseAlgorithm"
+                aria-expanded="false" aria-controls="collapseAlgorithm">
+            Select algorithm
+        </button>
     </div>
+</div>
 
-    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 collapse" id="collapseAlgorithm">
-        <% for(let messageDigest of messageDigests) { %>
-            <div class="col text-center">
-                <h3><%= messageDigest.group %></h3>
-                <% for(let child of messageDigest.children) { %>
+<div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 collapse" id="collapseAlgorithm">
+    <% for(let messageDigest of messageDigests) { %>
+        <div class="col text-center">
+            <h3><%= messageDigest.group %></h3>
+            <% for(let child of messageDigest.children) { %>
                 <button class="btn mb-2"
                         :class="$store.messageDigest.isType('<%= child.type %>') ? 'btn-secondary' : 'btn-outline-secondary'"
                         @click="$store.messageDigest.updateSelectedType('<%= child.type %>', '<%= child.displayName %>','<%= child.supportedHmac %>')">
                     <%= child.displayName %>
                 </button>
-                <% } %>
-            </div>
-        <% } %>
-    </div>
+            <% } %>
+        </div>
+    <% } %>
+</div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="text-center" x-text="'Selected algorithm: ' + $store.messageDigest.selectedTypeDisplayName">
-                        Selected algorithm: MD5
-                    </h5>
-                    <div class="form-check mb-3" x-show="$store.messageDigest.supportedHmac">
-                        <label class="form-check-label" for="supportHmac">Enable Hmac</label>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="text-center"
+                    x-text="'Selected algorithm: ' + $store.messageDigest.selectedTypeDisplayName">
+                    Selected algorithm: MD5
+                </h5>
+                <div class="form-check mb-3" x-show="$store.messageDigest.supportedHmac">
+                    <label class="form-check-label" for="supportHmac">Enable Hmac</label>
+                    <input class="form-check-input"
+                           id="supportHmac"
+                           type="checkbox"
+                           x-model="$store.messageDigest.usingHmac"
+                           @change="$store.messageDigest.changeUsingHmac($event.target.checked)">
+                </div>
+
+                <div class="form-check mb-3" x-show="$store.messageDigest.supportedFile">
+                    <label class="form-check-label" for="supportFile">Load from files</label>
+                    <input class="form-check-input"
+                           id="supportFile"
+                           type="checkbox"
+                           x-model="$store.messageDigest.usingFile"
+                           @change="$store.messageDigest.changeUsingFile($event.target.checked)">
+                </div>
+
+                <div class="mb-3"
+                     x-show="$store.messageDigest.usingHmac && $store.messageDigest.supportedHmac">
+                    <label class="form-label">Secret Key: </label>
+                    <textarea class="form-control" rows="2"
+                              x-model="$store.messageDigest.secretKey"
+                              @keyup.debounce="$store.messageDigest.changeSecret($event)"></textarea>
+                </div>
+                <div class="mb-3" x-show="!$store.messageDigest.usingFile">
+                    <label class="form-label">Input: </label>
+                    <textarea class="form-control" rows="3"
+                              x-model="$store.messageDigest.input"
+                              @keyup.debounce="$store.messageDigest.changeInput($event)"></textarea>
+                </div>
+                <div class="mb-3" x-show="$store.messageDigest.usingFile">
+                    <label for="formFile" class="form-label">Select file to generate checksum</label>
+                    <input class="form-control" type="file" id="formFile"
+                           @change="$store.messageDigest.changeInputWithFile($event)">
+                </div>
+                <div class="mb-3 text-center d-flex align-items-center justify-content-center">
+                    <button class="btn btn-success me-3" @click="$store.messageDigest.generateOutput()">
+                        Generate
+                    </button>
+                    <div>
                         <input class="form-check-input"
-                               id="supportHmac"
                                type="checkbox"
-                               x-model="$store.messageDigest.usingHmac"
-                               @change="$store.messageDigest.changeUsingHmac($event.target.checked)">
-                    </div>
-
-                    <div class="form-check mb-3" x-show="$store.messageDigest.supportedFile">
-                        <label class="form-check-label" for="supportFile">Load from files</label>
-                        <input class="form-check-input"
-                               id="supportFile"
-                               type="checkbox"
-                               x-model="$store.messageDigest.usingFile"
-                               @change="$store.messageDigest.changeUsingFile($event.target.checked)">
-                    </div>
-
-                    <div class="mb-3" x-show="$store.messageDigest.usingHmac && $store.messageDigest.supportedHmac">
-                        <label class="form-label">Secret Key: </label>
-                        <textarea class="form-control" rows="2"
-                                  x-model="$store.messageDigest.secretKey"
-                                  @keyup.debounce="$store.messageDigest.changeSecret($event)"></textarea>
-                    </div>
-                    <div class="mb-3" x-show="!$store.messageDigest.usingFile">
-                        <label class="form-label">Input: </label>
-                        <textarea class="form-control" rows="3"
-                                  x-model="$store.messageDigest.input"
-                                  @keyup.debounce="$store.messageDigest.changeInput($event)"></textarea>
-                    </div>
-                    <div class="mb-3" x-show="$store.messageDigest.usingFile">
-                        <label for="formFile" class="form-label">Select file to generate checksum</label>
-                        <input class="form-control" type="file" id="formFile"
-                               @change="$store.messageDigest.changeInputWithFile($event)">
-                    </div>
-                    <div class="mb-3 text-center d-flex align-items-center justify-content-center">
-                        <button class="btn btn-success me-3" @click="$store.messageDigest.generateOutput()">
-                            Generate
-                        </button>
-                        <div>
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   x-model="$store.messageDigest.autoGenerate"
-                                   @change="$store.messageDigest.autoGenerate = $event.target.checked"
-                                   id="autoGenerateCheckbox">
-                            <label class="form-check-label" for="autoGenerateCheckbox">
+                               x-model="$store.messageDigest.autoGenerate"
+                               @change="$store.messageDigest.autoGenerate = $event.target.checked"
+                               id="autoGenerateCheckbox">
+                        <label class="form-check-label" for="autoGenerateCheckbox">
                             Auto generate
                         </label>
-                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Output: </label>
-                        <textarea class="form-control" rows="3" x-model="$store.messageDigest.output" disabled></textarea>
-                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Output: </label>
+                    <textarea class="form-control" rows="3" x-model="$store.messageDigest.output"
+                              disabled></textarea>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<%- include(rootPath + '/common/ejs/side-nav-end') %>
 
 <script src="/common/js/index.js"></script>
 </body>

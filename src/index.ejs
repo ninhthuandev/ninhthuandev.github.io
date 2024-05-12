@@ -12,7 +12,7 @@
 </head>
 <body x-data :data-bs-theme="$store.theme.value">
 
-<nav class="navbar navbar-expand-lg border-bottom">
+<nav class="navbar navbar-expand-lg border-bottom mb-3">
     <div class="container">
         <a class="navbar-brand me-auto" href="/">
             <i class="bi bi-tools"></i>
@@ -36,27 +36,27 @@
     </div>
 </nav>
 
-<div class="container pt-5">
-    <div class="row text-center">
-        <h1>Make life easier with our one-stop toolkit.</h1>
-    </div>
-    <div class="row text-center">
-        <h6>
-            Discover the ultimate toolkit for simplifying your life, all for free! From productivity hacks to handy
-            utilities,
-            our one-stop solution has you covered.
-            <br/>
-            Get ready to make life easier with our collection of tools!
-
-        </h6>
-        <p>
-            <i>We're constantly adding new tools to help you with even more tasks. Stay tuned!</i>
-        </p>
-    </div>
-    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2">
-        <%- include(rootPath + '/common/ejs/list-tools'); %>
-    </div>
+<%- include(rootPath + '/common/ejs/side-nav-start') %>
+<div class="row text-center">
+    <h1>Make life easier with our one-stop toolkit.</h1>
 </div>
+<div class="row text-center">
+    <h6>
+        Discover the ultimate toolkit for simplifying your life, all for free! From productivity hacks to handy
+        utilities,
+        our one-stop solution has you covered.
+        <br/>
+        Get ready to make life easier with our collection of tools!
+
+    </h6>
+    <p>
+        <i>We're constantly adding new tools to help you with even more tasks. Stay tuned!</i>
+    </p>
+</div>
+<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2">
+    <%- include(rootPath + '/common/ejs/list-tools'); %>
+</div>
+<%- include(rootPath + '/common/ejs/side-nav-end') %>
 
 <script src="/common/js/index.js"></script>
 </body>

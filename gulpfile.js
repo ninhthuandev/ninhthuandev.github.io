@@ -10,8 +10,10 @@ const gulpConnect = require('gulp-connect');
 const path = require("path");
 const through = require('through2');
 const fs = require('fs');
+const util = require('util');
 
 var data = {};
+var combinedData = {};
 
 function extractPagesFolder() {
     return (path) => {
@@ -28,18 +30,70 @@ function populateDataFromJsonPipe() {
         fs.readFile(dirPath + '/data.json', null, (err, data) => {
             if (data) {
                 file.data = JSON.parse(data);
+            } else {
+                file.data = {};
             }
+            file.data.currentTool = {};
+            const currentDirName = getLastSegments(dirPath);
+            const parentDir = dirPath.substring(0, dirPath.lastIndexOf('\\'));
+            fs.readFile(parentDir + '/data.json', null, (err, parentData) => {
 
-            callback(null, file);
+                if (parentData) {
+                    const parentDataJson = JSON.parse(parentData);
+                    parentDataJson.tools.forEach(toolData => {
+                        if (toolData.href.endsWith(currentDirName)) {
+                            file.data.currentTool = toolData;
+                        }
+                    });
+                }
+
+                callback(null, file);
+            });
         });
     });
 }
 
+function getLastSegments(url) {
+    const normalizedUrl = url.replace(/\\/g, '/');
+    if (normalizedUrl.includes('/')) {
+        const segments = normalizedUrl.split('/');
+        return segments[segments.length - 1];
+    } else {
+        return null;
+    }
+}
+
+function loadDataJsonFromDir(dirPath) {
+    const dataPath = dirPath + '/data.json';
+    if (fs.existsSync(dataPath)) {
+        return JSON.parse(fs.readFileSync(dataPath, null));
+    } else {
+        return {};
+    }
+}
+
+function populateHierarchyDataJson(baseDir) {
+    const dirs = fs.readdirSync(baseDir);
+    let combinedData = loadDataJsonFromDir(baseDir);
+    combinedData?.tools?.forEach(toolData => {
+        const folderName = getLastSegments(toolData.href);
+        if (folderName !== null) {
+            const newPath = combinedData.isRoot === true ? baseDir + '/pages/' + folderName : baseDir + '/' + folderName;
+            toolData.children = populateHierarchyDataJson(newPath);
+        }
+    });
+
+    return combinedData;
+}
+
 function buildEjs(cb) {
+    const hierarchyData = populateHierarchyDataJson('./src');
+
     gulp.src(['./src/**/*.ejs', '!./src/common/ejs/*.ejs'], {base: './src'})
         .pipe(populateDataFromJsonPipe())
         .pipe(ejs({
-            rootPath: process.cwd() + "/src"
+            rootPath: process.cwd() + "/src",
+            hierarchyData: hierarchyData
         }).on('error', log))
         .pipe(rename({extname: '.html'}))
         .pipe(rename(extractPagesFolder()))
@@ -88,7 +142,8 @@ function serve() {
 }
 
 function test(cb) {
-    console.log(process.cwd());
+    let myObject = populateHierarchyDataJson('./src');
+    console.log(util.inspect(myObject, false, null, true /* enable colors */))
 }
 
 exports.buildEjs = buildEjs;

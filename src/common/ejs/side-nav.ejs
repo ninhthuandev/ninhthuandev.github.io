@@ -1,0 +1,44 @@
+<style>
+  .nt-tools-links-item {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+
+  .nt-tools-links-item:hover {
+    background-color: var(--bs-secondary-bg);
+  }
+
+  .nt-tools-links-item.active {
+    background-color: var(--bs-secondary-bg);
+  }
+</style>
+<div class="offcanvas-lg offcanvas-start">
+    <div class="offcanvas-body">
+        <nav class="w-100">
+            <ul class="nav flex-column">
+                <% for (let data of hierarchyData.tools) { %>
+                    <% let isMatchRootTool = currentTool?.href?.startsWith(data.href) %>
+                    <li class="nav-item">
+                        <a class="nav-link text-body fw-semibold text-decoration-none" href="<%= data.href %>">
+                            <i style="color: <%= data.iconColor %>" class="<%= data.iconClasses %>"></i>
+                            <span class="ps-1 <%= isMatchRootTool ? 'text-decoration-underline' : '' %>"><%= data.name %></span>
+                        </a>
+                        <ul class="list-unstyled small fw-normal">
+                            <% if (data.children?.tools) { %>
+                                <% for(let childData of data.children.tools) { %>
+                                    <li class="mt-2 ms-4 mb-3">
+                                        <a class="nt-tools-links-item text-body <%= currentTool !== undefined && childData.href === currentTool.href ? 'active' : '' %>"
+                                           href="<%= childData.href %>">
+                                            <%= childData.name %>
+                                        </a>
+                                    </li>
+                                <% } %>
+                            <% } %>
+                        </ul>
+                    </li>
+                <% } %>
+            </ul>
+        </nav>
+    </div>
+</div>

@@ -1,28 +1,37 @@
 {
+  "isRoot": true,
   "tools": [
     {
       "name": "Color Tools",
       "description": "A collection of tools for working with colors.",
       "comingSoon": false,
-      "href": "/color-tools"
+      "href": "/color-tools",
+      "iconClasses": "bi bi-palette-fill",
+      "iconColor": "#f7d800"
     },
     {
       "name": "QR Tools",
       "description": "A collection of tools for working with QR codes.",
       "comingSoon": false,
-      "href": "/qr-code-tools"
+      "href": "/qr-code-tools",
+      "iconClasses": "bi bi-qr-code-scan",
+      "iconColor": "black"
     },
     {
       "name": "Crypto Tools",
       "description": "A collection of tools for working with cryptographic algorithms.",
       "comingSoon": false,
-      "href": "/crypto-tools"
+      "href": "/crypto-tools",
+      "iconClasses": "bi bi-gear-wide-connected",
+      "iconColor": "#00be36"
     },
     {
       "name": "Datetime Tools",
       "description": "A collection of tools for working with dates and times.",
       "comingSoon": true,
-      "href": "#"
+      "href": "#",
+      "iconClasses": "bi bi-calendar2-fill",
+      "iconColor": "#0084ff"
     }
   ]
 }

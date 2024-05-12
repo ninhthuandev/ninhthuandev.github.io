@@ -12,11 +12,11 @@
 
 <%- include(rootPath + '/common/ejs/nav-bar-with-data') %>
 
-<div class="container">
+<%- include(rootPath + '/common/ejs/side-nav-start') %>
     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2">
         <%- include(rootPath + '/common/ejs/list-tools'); %>
     </div>
-</div>
+<%- include(rootPath + '/common/ejs/side-nav-end') %>
 
 <script src="/common/js/index.js"></script>
 </body>

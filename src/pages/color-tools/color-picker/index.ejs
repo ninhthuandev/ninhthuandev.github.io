@@ -1,42 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Color picker</title>
+    <title>Color picker</title>
 
-  <%- include(rootPath + '/common/ejs/head-link-end-script'); %>
+    <%- include(rootPath + '/common/ejs/head-link-end-script'); %>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
-  <script defer src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
+    <script defer src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
 </head>
 <body x-data :data-bs-theme="$store.theme.value">
 
 <%- include(rootPath + '/common/ejs/nav-bar-with-data', {navbarLinks: [{"name": "Color tools", "href": "/color-tools"}]}) %>
-
-<div class="container">
-  <div class="d-flex flex-column justify-content-center align-items-center color-picker-container">
-    <button type="button" class="btn btn-lg btn-light" x-data @click="$store.color.copy()">
-      <i class="bi bi-copy" x-data x-show="!$store.color.copied"></i>
-      <i class="bi bi-check2-all" x-data x-show="$store.color.copied"></i>
-       Copy
-    </button>
-    <p class="h1">
-      <span x-data x-text="$store.color.value">#000000</span>
-    </p>
-    <div class="coloris-container">
-      <input type="text" data-coloris class="coloris-field" value="#000000" readonly>
+<%- include(rootPath + '/common/ejs/side-nav-start') %>
+<div class="col-12 col-lg-9">
+    <div class="d-flex flex-column justify-content-center align-items-center color-picker-container">
+        <button type="button" class="btn btn-lg btn-light" x-data @click="$store.color.copy()">
+            <i class="bi bi-copy" x-data x-show="!$store.color.copied"></i>
+            <i class="bi bi-check2-all" x-data x-show="$store.color.copied"></i>
+            Copy
+        </button>
+        <p class="h1">
+            <span x-data x-text="$store.color.value">#000000</span>
+        </p>
+        <div class="coloris-container">
+            <input type="text" data-coloris class="coloris-field" value="#000000" readonly>
+        </div>
     </div>
-  </div>
 </div>
-
+<%- include(rootPath + '/common/ejs/side-nav-end') %>
 <style>
   .coloris-container .clr-field button {
     width: 100%;
     height: 100%;
     border-radius: 5px;
   }
+
   .coloris-container input {
     width: 275px;
     font-size: 30px;
