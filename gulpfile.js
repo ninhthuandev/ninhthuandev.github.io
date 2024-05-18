@@ -2,6 +2,7 @@ const ejs = require("gulp-ejs")
 const gulp = require('gulp');
 const log = require('fancy-log');
 const rename = require('gulp-rename');
+const replace = require('gulp-replace');
 const htmlMin = require('gulp-htmlmin');
 const babel = require('gulp-babel');
 const sourcemaps = require('gulp-sourcemaps');
@@ -11,6 +12,8 @@ const path = require("path");
 const through = require('through2');
 const fs = require('fs');
 const util = require('util');
+const sass = require('gulp-sass')(require('sass'));
+
 
 var data = {};
 var combinedData = {};
@@ -104,6 +107,8 @@ function buildEjs(cb) {
         }).on('error', log))
         .pipe(rename({extname: '.html'}))
         .pipe(rename(extractPagesFolder()))
+        // replace .scss -> .css in link element
+        .pipe(replace(/href=["'](.*)\.scss["']/g, 'href="$1.css"'))
         .pipe(htmlMin({collapseWhitespace: true}))
         .pipe(gulp.dest('./docs'))
         .pipe(gulpConnect.reload());
@@ -124,20 +129,20 @@ function buildJs(cb) {
     cb();
 }
 
-function buildCss(cb) {
-    gulp.src('./src/**/*.css', {base: './src'})
+function buildScss(cb) {
+    gulp.src('./src/**/*.scss', {base: './src'})
         .pipe(rename(extractPagesFolder()))
+        .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('./docs'))
         .pipe(gulpConnect.reload());
     cb();
-
 }
 
 function watchBuild(cb) {
     gulp.watch('./src/**/*.ejs', buildEjs);
     gulp.watch('./src/**/*.json', buildEjs);
     gulp.watch('./src/**/*.js', buildJs);
-    gulp.watch('./src/**/*.css', buildCss);
+    gulp.watch('./src/**/*.scss', buildScss);
     cb();
 }
 
@@ -156,9 +161,9 @@ function test(cb) {
 
 exports.buildEjs = buildEjs;
 exports.buildJs = buildJs;
-exports.buildCss = buildCss;
+exports.buildCss = buildScss;
 exports.watchBuild = watchBuild;
 exports.test = test;
-exports.serve = gulp.series(buildEjs, buildJs, buildCss, watchBuild, serve);
-exports.build = gulp.series(buildEjs, buildJs);
+exports.serve = gulp.series(buildEjs, buildJs, buildScss, watchBuild, serve);
+exports.build = gulp.series(buildEjs, buildJs, buildScss);
 exports.default = gulp.series(buildEjs, buildJs);

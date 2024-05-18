@@ -1,0 +1,18 @@
+.autoComplete_wrapper {
+  & > ul {
+    background-color: var(--bs-body-bg);
+
+    & > li {
+      background-color: var(--bs-body-bg);
+      color: var(--bs-body-color);
+      mark {
+        padding: 0;
+        color: var(--bs-success);
+      }
+    }
+  }
+
+  & > input {
+    border: var(--bs-border-width) solid var(--bs-border-color);
+  }
+}

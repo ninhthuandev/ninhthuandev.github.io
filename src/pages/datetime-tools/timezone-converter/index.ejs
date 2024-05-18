@@ -10,18 +10,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.02.min.css">
+    <link rel="stylesheet" href="scss/timezone-converter.scss">
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
 </head>
 <body x-data :data-bs-theme="$store.theme.value">
-<style>
-  .autoComplete_wrapper>ul>li mark {
-    padding: 0;
-    color: var(--bs-success);
-  }
-</style>
 
 <%- include(rootPath + '/common/ejs/nav-bar-with-data') %>
 
