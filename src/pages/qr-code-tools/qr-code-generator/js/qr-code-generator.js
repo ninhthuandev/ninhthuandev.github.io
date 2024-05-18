@@ -29,6 +29,7 @@ function validateForm(field) {
 }
 
 function triggerDownloadImage(qrCodeBlobImage, mimeType) {
+    console.log('Trigger download image');
     const link = document.createElement('a');
     link.href = qrCodeBlobImage;
     link.download = 'qr-code.' + Object.keys(MimeType).find(key => MimeType[key] === mimeType).toLowerCase();
@@ -36,22 +37,7 @@ function triggerDownloadImage(qrCodeBlobImage, mimeType) {
 }
 
 function downloadQrCode(mimeType) {
-    const qrCodeImageContainer = document.getElementById('qr-code-image');
-    // const qrCodeCanvas = qrCodeImageContainer.querySelector('canvas');
-    // const qrCodeImage = qrCodeCanvas.toDataURL(mimeType);
-    Alpine.store('qrCode').getBlobQrCodeForDownloading(mimeType).then((blob) => {
-        if (mimeType !== MimeType.SVG) {
-            const qrCodeBlobImage = URL.createObjectURL(blob);
-            triggerDownloadImage(qrCodeBlobImage, mimeType);
-        }
-    });
-    // if (mimeType !== MimeType.SVG) {
-    //     triggerDownloadImage(qrCodeImage);
-    // } else {
-    //     const ctx = new C2S(500, 500);
-    //     ctx.fillStyle="white";
-    //
-    // }
+    Alpine.store('qrCode').downloadQrCode(mimeType);
 }
 
 document.addEventListener('alpine:init', () => {
@@ -195,12 +181,13 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        getBlobQrCodeForDownloading(mimeType) {
+        downloadQrCode(mimeType) {
             let options = {
                 ...defaultQrCodeOptions,
                 text: this.value,
                 drawer: mimeType === MimeType.SVG ? 'svg' : 'canvas',
                 onRenderingEnd: (_, data) => {
+                    console.log("Rendering end", data);
                     if (mimeType === MimeType.SVG) {
                         const svgString =
                         `<?xml version="1.0" encoding="iso-8859-1"?>
@@ -210,8 +197,10 @@ document.addEventListener('alpine:init', () => {
 
                         let objectUrl = URL.createObjectURL(blob);
 
+                        console.log('Download SVG QR Code');
                         triggerDownloadImage(objectUrl, mimeType);
                     } else {
+                        console.log('Download PNG QR Code');
                         triggerDownloadImage(data, mimeType);
                     }
                 }
@@ -221,7 +210,8 @@ document.addEventListener('alpine:init', () => {
 
             fakeElement.style.width = '1000px';
             let qrCode = new QRCode(fakeElement, options);
-            qrCode.makeCode(this.value);
+
+            fakeElement.remove();
         },
 
         changeValueAndGenerateQrCode(value) {
