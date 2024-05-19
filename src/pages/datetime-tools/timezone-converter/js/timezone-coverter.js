@@ -35,18 +35,39 @@ document.addEventListener('alpine:init', () => {
     });
 
     Alpine.store('timeZone', {
+        isNow: false,
         supportedTimeZonesAndOffsets: supportedTimeZonesAndOffsets,
         inputDateTime: currentDateTimeWithFormat,
         outputDateTime: '',
         inputTimeZone: currentTimeZone,
         outputTimeZone: supportedTimeZones[0],
 
+        intervalSetDatetime: null,
+
+        updateDatetimeToNow($event) {
+            this.isNow = $event.target.checked;
+            if (this.isNow) {
+                this.clearDatetimeNow();
+                this.intervalSetDatetime = setInterval(() => {
+                    this.inputDateTime = flatpickr.formatDate(new Date(), FLATPICKR_DATE_FORMAT);
+                    this.convertTZ();
+                }, 1000);
+            } else {
+                this.clearDatetimeNow();
+            }
+        },
+        clearDatetimeNow() {
+            if (this.intervalSetDatetime) {
+                clearInterval(this.intervalSetDatetime);
+                this.intervalSetDatetime = null;
+            }
+        },
         changeInputDateTime(event) {
             this.convertTZ();
         },
         convertTZ() {
             console.log(this.inputDateTime, this.inputTimeZone, this.outputTimeZone);
-            const luxonInputDate = luxon.DateTime.fromFormat(this.inputDateTime, NORMAL_DATE_FORMAT, { zone: this.inputTimeZone });
+            const luxonInputDate = luxon.DateTime.fromFormat(this.inputDateTime, NORMAL_DATE_FORMAT, {zone: this.inputTimeZone});
             const luxonOutputDate = luxonInputDate.setZone(this.outputTimeZone);
             this.outputDateTime = luxonOutputDate.toFormat(NORMAL_DATE_FORMAT);
             console.log(this.outputDateTime);

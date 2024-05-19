@@ -26,8 +26,19 @@
         <div class="card">
             <div class="card-body">
                 <div class="mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input"
+                               id="isNow"
+                               type="checkbox"
+                               role="switch"
+                               @change.debounce="$store.timeZone.updateDatetimeToNow($event)">
+                        <label class="form-check-label" for="isNow">Now</label>
+                    </div>
+                </div>
+                <div class="mb-3">
                     <label for="datetime-picker-input" class="form-label">Pick date time</label>
                     <input type="text" class="form-control dark" id="datetime-picker-input"
+                           :disabled="$store.timeZone.isNow"
                            x-model="$store.timeZone.inputDateTime"
                            @change="$store.timeZone.changeInputDateTime($event)">
                 </div>
