@@ -26,6 +26,17 @@ function extractPagesFolder() {
     }
 }
 
+function convertToHtmlIndexFile() {
+    return (path) => {
+        const fileName = path.basename;
+        const folderNameOfThatFile = path.dirname.substring(path.dirname.lastIndexOf('\\') + 1);
+
+        if (fileName.includes(folderNameOfThatFile)) {
+            path.basename = 'index';
+        }
+    }
+}
+
 function populateDataFromJsonPipe() {
     return through.obj((file, encoding, callback) => {
         const path = file.path;
@@ -107,6 +118,7 @@ function buildEjs(cb) {
         }).on('error', log))
         .pipe(rename({extname: '.html'}))
         .pipe(rename(extractPagesFolder()))
+        .pipe(rename(convertToHtmlIndexFile()))
         // replace .scss -> .css in link element
         .pipe(replace(/href=["'](.*)\.scss["']/g, 'href="$1.css"'))
         .pipe(htmlMin({collapseWhitespace: true}))
@@ -166,4 +178,4 @@ exports.watchBuild = watchBuild;
 exports.test = test;
 exports.serve = gulp.series(buildEjs, buildJs, buildScss, watchBuild, serve);
 exports.build = gulp.series(buildEjs, buildJs, buildScss);
-exports.default = gulp.series(buildEjs, buildJs);
+exports.default = gulp.series(buildEjs, buildJs, buildScss);

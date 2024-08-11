@@ -15,8 +15,8 @@
     {
       "name": "PKI",
       "description": "PKI tools",
-      "comingSoon": true,
-      "href": "#"
+      "comingSoon": false,
+      "href": "/crypto-tools/public-key-infrastructure"
     },
     {
       "name": "PBKDF2",

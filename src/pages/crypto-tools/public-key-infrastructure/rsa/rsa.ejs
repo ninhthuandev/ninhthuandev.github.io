@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Public key infrastructure tools - ed25529</title>
+
+    <script src="https://unpkg.com/node-forge@1.0.0/dist/forge.min.js"></script>
+
+    <%- include(rootPath + '/common/ejs/head-link-end-script'); %>
+</head>
+<body x-data :data-bs-theme="$store.theme.value">
+
+<%- include(rootPath + '/common/ejs/nav-bar-with-data', {navbarLinks: [{"name": "Crypto tools", "href": "/crypto-tools"}]}) %>
+
+<%- include(rootPath + '/common/ejs/side-nav-start') %>
+<div class="row">
+    <div class="col-12 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-3 d-flex justify-content-start align-items-center">
+                    <label>Key size: </label>
+                    <select class="form-select ms-1"
+                            aria-label="Key size"
+                            style="width: fit-content"
+                            x-model="$store.rsa.bits">
+                        <option selected>512</option>
+                        <option value="1024">1024</option>
+                        <option value="2048">2048</option>
+                        <option value="4096">4096</option>
+                    </select>
+                    <button class="btn btn-primary ms-3" @click="$store.rsa.generateKeyPair()">
+                        Generate key pair
+                    </button>
+                </div>
+                <div class="mb-3">
+                    <label for="private-key" class="form-label">Private key</label>
+                    <textarea class="form-control" id="private-key"
+                              rows="3"
+                              style="min-height: 85.33px"
+                              x-model="$store.rsa.privateKeyPem"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="public-key" class="form-label">Public key</label>
+                    <textarea class="form-control" id="public-key"
+                              rows="3"
+                              style="min-height: 85.33px"
+                              x-model="$store.rsa.publicKeyPem"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title text-center m-0">
+                    Encrypt/Decrypt
+                </h6>
+
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <label> Algorithms </label>
+                        <select class="form-select"
+                                aria-label="Algorithms"
+                                x-model="$store.encryption.algorithm">
+                            <option value="RSAES-PKCS1-V1_5">
+                                RSAES-PKCS1-V1_5 (RSA encryption with PKCS#1 v1.5 padding)
+                            </option>
+                            <option value="RSA-OAEP">
+                                RSA-OAEP (RSA encryption with OAEP padding)
+                            </option>
+                            <option value="RSAES-OAEP/SHA-256">
+                                RSAES-OAEP/SHA-256 (RSA encryption with OAEP padding and SHA-256)
+                            </option>
+                            <option value="RSAES-OAEP/SHA-256/MGF1-SHA-1">
+                                RSAES-OAEP/SHA-256/MGF1-SHA-1 (RSA encryption with OAEP padding, SHA-256, and MGF1 with SHA-1)
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-5">
+                        <label for="input-text" class="form-label">Clear text</label>
+                        <textarea class="form-control" id="input-text" rows="4"
+                                  x-model="$store.encryption.clearText"></textarea>
+                    </div>
+                    <div class="col-12 col-md-2 pt-1 pt-md-4 d-flex flex-column justify-content-evenly align-items-center">
+                        <button class="btn btn-primary mb-1 mb-md-0" @click="$store.encryption.encrypt()">
+                            Encrypt
+                        </button>
+                        <button class="btn btn-primary" @click="$store.encryption.decrypt()">
+                            Decrypt
+                        </button>
+                    </div>
+                    <div class="col-12 col-md-5">
+                        <label for="encrypted-text" class="form-label">Encrypted text</label>
+                        <textarea class="form-control" id="encrypted-text" rows="4"
+                                  x-model="$store.encryption.encryptedText"></textarea>
+                    </div>
+                    <div class="col-12 class">
+                        <p class="text-danger text-center" x-show="$store.encryption.errorMessage !== ''" x-text="$store.encryption.errorMessage"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include(rootPath + '/common/ejs/side-nav-end') %>
+<script src="rsa.js"></script>
+<script src="/common/js/index.js"></script>
+</body>
+</html>
